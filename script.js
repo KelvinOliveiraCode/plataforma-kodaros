@@ -1901,7 +1901,7 @@ if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
             title: "Os 10 Pilares da GestÃ£o Empresarial",
             desc: "10 pilares para organizar e crescer sua empresa com controle e decisÃµes baseadas em dados.",
             old: "R$ 67,00", now: "R$ 22,99",
-            cover: COVER_BASE + "livro%20os%2010%20pilares%20da%20gest%C3%A3o%20empresarial.png",
+            cover: COVER_BASE + "livro-gestao.png",
             url: "https://pay.hotmart.com/S107016677T?utm_source=funil&utm_medium=quiz&utm_campaign=diagnostico"
         },
         financeiro: {
@@ -1909,7 +1909,7 @@ if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
             title: "Os 10 Pilares do Controle Financeiro",
             desc: "Organize o fluxo de caixa, a formaÃ§Ã£o de preÃ§os e reduza custos para lucrar com previsibilidade.",
             old: "R$ 67,00", now: "R$ 22,99",
-            cover: COVER_BASE + "livro%20os%2010%20pilares%20do%20controle%20financeiro.png",
+            cover: COVER_BASE + "livro-financeiro.png",
             url: "https://pay.hotmart.com/E107016796K?utm_source=funil&utm_medium=quiz&utm_campaign=diagnostico"
         },
         site: {
@@ -1917,7 +1917,7 @@ if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
             title: "Use Seu Site Para Escalar Sua Empresa",
             desc: "Transforme seu site em mÃ¡quina de vendas com SEO, captura de leads e automaÃ§Ã£o.",
             old: "R$ 67,00", now: "R$ 22,99",
-            cover: COVER_BASE + "livro%20use%20seu%20site%20para%20escalar%20sua%20empresa.png",
+            cover: COVER_BASE + "livro-site.png",
             url: "https://pay.hotmart.com/Y107016734X?utm_source=funil&utm_medium=quiz&utm_campaign=diagnostico"
         },
         reclamacoes: {
@@ -1925,7 +1925,7 @@ if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
             title: "Transforme ReclamaÃ§Ãµes em Vendas",
             desc: "O mÃ©todo para virar reclamaÃ§Ãµes em fidelizaÃ§Ã£o e construir uma cultura centrada no cliente.",
             old: "R$ 67,00", now: "R$ 22,99",
-            cover: COVER_BASE + "livro%20transforme%20reclama%C3%A7%C3%B5es%20em%20vendas.png",
+            cover: COVER_BASE + "livro-reclamacoes.png",
             url: "https://pay.hotmart.com/G107016779V?utm_source=funil&utm_medium=quiz&utm_campaign=diagnostico"
         },
         arquitetura: {

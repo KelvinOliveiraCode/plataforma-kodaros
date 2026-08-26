@@ -172,25 +172,34 @@ function handleContact(e){
   const cats=document.querySelectorAll('.agora-cat');
   const categories=document.querySelectorAll('.tool-category');
   if(!cats.length) return;
-  // Garante que ao trocar de categoria, só a selecionada aparece
   function showCategory(cat){
     cats.forEach(b=>b.classList.toggle('active', b.dataset.cat===cat));
     categories.forEach(c=>{
       const show = cat==='all' || c.dataset.cat===cat;
-      c.hidden = !show;
-      c.style.display = show ? '' : 'none';
-      c.classList.toggle('hidden-by-cat', !show);
+      if(show){
+        c.hidden = false;
+        c.style.display = '';
+        c.removeAttribute('hidden');
+        c.classList.remove('hidden-by-cat');
+      } else {
+        c.hidden = true;
+        c.style.display = 'none';
+        c.classList.add('hidden-by-cat');
+      }
     });
-    // Atualiza contador de ferramentas visíveis
     const visible = cat==='all' ? document.querySelectorAll('#panel-ferramentas .tool').length : document.querySelectorAll('#panel-ferramentas .tool-category:not([hidden]) .tool').length;
     const meta = document.getElementById('searchMeta');
     if(meta) meta.textContent = visible + ' ferramentas';
   }
   cats.forEach(btn=>{
-    btn.addEventListener('click', ()=> showCategory(btn.dataset.cat));
+    btn.addEventListener('click', (e)=>{
+      e.preventDefault();
+      showCategory(btn.dataset.cat);
+    });
   });
-  // Expondo para busca e inicialização
   window._showCategory = showCategory;
+  // Garante estado inicial correto (Todas)
+  showCategory('all');
 })();
 
 // PLATFORM TABS — Biblioteca / Ferramentas / Diagnóstico

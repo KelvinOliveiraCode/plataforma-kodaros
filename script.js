@@ -171,25 +171,26 @@ function handleContact(e){
 (function(){
   const cats=document.querySelectorAll('.agora-cat');
   const categories=document.querySelectorAll('.tool-category');
-  const tools=document.querySelectorAll('#panel-ferramentas .tool');
   if(!cats.length) return;
-  cats.forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      cats.forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-      const cat=btn.dataset.cat;
-      if(cat==='all'){
-        categories.forEach(c=>{ c.hidden=false; c.classList.remove('hidden-by-cat'); });
-        tools.forEach(t=>t.classList.remove('hidden-by-cat'));
-      } else {
-        categories.forEach(c=>{
-          const show=c.dataset.cat===cat;
-          c.hidden=!show;
-          c.classList.toggle('hidden-by-cat', !show);
-        });
-      }
+  // Garante que ao trocar de categoria, só a selecionada aparece
+  function showCategory(cat){
+    cats.forEach(b=>b.classList.toggle('active', b.dataset.cat===cat));
+    categories.forEach(c=>{
+      const show = cat==='all' || c.dataset.cat===cat;
+      c.hidden = !show;
+      c.style.display = show ? '' : 'none';
+      c.classList.toggle('hidden-by-cat', !show);
     });
+    // Atualiza contador de ferramentas visíveis
+    const visible = cat==='all' ? document.querySelectorAll('#panel-ferramentas .tool').length : document.querySelectorAll('#panel-ferramentas .tool-category:not([hidden]) .tool').length;
+    const meta = document.getElementById('searchMeta');
+    if(meta) meta.textContent = visible + ' ferramentas';
+  }
+  cats.forEach(btn=>{
+    btn.addEventListener('click', ()=> showCategory(btn.dataset.cat));
   });
+  // Expondo para busca e inicialização
+  window._showCategory = showCategory;
 })();
 
 // PLATFORM TABS — Biblioteca / Ferramentas / Diagnóstico

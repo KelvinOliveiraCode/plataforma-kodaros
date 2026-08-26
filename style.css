@@ -278,9 +278,9 @@ ul{list-style:none}
 }
 
 /* ---------- SECTION HEADER ---------- */
-.section{padding:88px 0;position:relative;border-top:1px solid var(--hairline)}
-.section--stone{background:var(--stone-basalto)}
-.section--obsidian{background:var(--stone-obsidian)}
+.section{padding:88px 0;position:relative;border-top:1px solid var(--hairline);background:transparent}
+.section--stone{background:transparent}
+.section--obsidian{background:transparent}
 .section--papyrus{background:var(--papyrus);color:#1A1A1A}
 .section--papyrus .section-label{color:#7A735F;border-color:rgba(0,0,0,0.08)}
 .section--papyrus .section-title{color:#121212}
@@ -339,9 +339,9 @@ ul{list-style:none}
 .stoa-status.live{color:var(--aurea);border-color:var(--aurea-hair);background:var(--aurea-soft)}
 
 /* ---------- BIBLIOTECA ---------- */
-.biblioteca{background:var(--papyrus);color:#1A1A1A}
-.biblioteca .section-title{color:#141412}
-.biblioteca .section-desc{color:#6B6560}
+.biblioteca{background:transparent;color:var(--ink-primary)}
+.biblioteca .section-title{color:var(--ink-primary)}
+.biblioteca .section-desc{color:var(--ink-muted)}
 .ebook-filter{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:0 auto 36px}
 .ebook-filter-btn{
   font-family:'Cinzel',serif;font-size:.68rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
@@ -508,7 +508,7 @@ tr.total td{font-weight:700;color:var(--ink-primary);border-top:2px solid rgba(2
 .tool-anchor{position:absolute;top:-90px}
 
 /* ---------- ORÁCULO / FUNIL ---------- */
-.oraculo{background:var(--stone-basalto);position:relative}
+.oraculo{background:transparent;position:relative}
 .oraculo::before{
   content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:min(920px,92%);height:1px;
   background:linear-gradient(90deg, transparent, var(--aurea-hair), transparent);
@@ -647,7 +647,7 @@ tr.total td{font-weight:700;color:var(--ink-primary);border-top:2px solid rgba(2
 .contact-form .field{margin-bottom:12px}
 
 /* ---------- FOOTER ---------- */
-.footer{padding:56px 0 28px;background:var(--stone-obsidian);border-top:1px solid var(--hairline);position:relative}
+.footer{padding:56px 0 28px;background:transparent;border-top:1px solid var(--hairline);position:relative}
 .footer-top{display:grid;grid-template-columns:1.2fr 2fr;gap:48px;margin-bottom:32px}
 @media(max-width:900px){.footer-top{grid-template-columns:1fr;gap:36px}}
 .footer-brand{max-width:320px}
@@ -668,7 +668,7 @@ tr.total td{font-weight:700;color:var(--ink-primary);border-top:2px solid rgba(2
 .reveal.active{opacity:1;transform:none}
 
 /* ---------- LEGAL ---------- */
-.legal-page{padding:140px 0 80px;min-height:100vh;background:var(--stone-obsidian)}
+.legal-page{padding:140px 0 80px;min-height:100vh;background:transparent}
 .legal-header{text-align:center;margin-bottom:48px}
 .legal-header h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,2.8rem);font-weight:600;letter-spacing:-.02em;color:var(--ink-primary);margin-bottom:8px}
 .legal-date{font-size:.84rem;color:var(--ink-muted)}

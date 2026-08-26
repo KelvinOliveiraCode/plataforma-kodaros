@@ -1702,7 +1702,7 @@ document.addEventListener('DOMContentLoaded', function() {
       animId = requestAnimationFrame(animate);
     }
     window.addEventListener('resize', resize);
-    if (!isTouch) document.addEventListener('mousemove', e => { mouse.tx = (e.clientX/window.innerWidth - 0.5)*60; mouse.ty = (e.clientY/window.innerHeight - 0.5)*60; });
+  // parallax mousemove removido
     resize(); animate();
   })();
 
@@ -1745,27 +1745,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }, { threshold: 0.06, rootMargin: '0px 0px -40px 0px' });
     els.forEach(el => { el.classList.add('reveal'); obs.observe(el); });
   })();
-
-  /* ---- MAGNETIC BUTTONS ---- */
-  (function initMagnetic() {
-    if (isTouch) return;
-    document.querySelectorAll('.btn, .nav-cta').forEach(btn => {
-      btn.addEventListener('mousemove', e => { const r = btn.getBoundingClientRect(); btn.style.transform = `translate(${(e.clientX - r.left - r.width/2) * 0.15}px, ${(e.clientY - r.top - r.height/2) * 0.15}px)`; });
-      btn.addEventListener('mouseleave', () => { btn.style.transform = 'translate(0,0)'; btn.style.transition = 'transform 0.5s cubic-bezier(0.22,1,0.36,1), background 0.3s, box-shadow 0.3s'; });
-      btn.addEventListener('mouseenter', () => { btn.style.transition = 'transform 0.1s ease, background 0.3s, box-shadow 0.3s'; });
-    });
-  })();
-
-  /* ---- CURSOR GLOW ---- */
-  (function initGlow() {
-    if (isTouch) return;
-    const g = document.createElement('div'); g.className = 'cursor-glow'; document.body.appendChild(g);
-    let gx = 0, gy = 0, cgx = 0, cgy = 0, inWin = false;
-    document.addEventListener('mousemove', e => { gx = e.clientX; gy = e.clientY; inWin = true; g.style.opacity = '1'; });
-    document.addEventListener('mouseleave', () => { inWin = false; g.style.opacity = '0'; });
-    document.addEventListener('mouseenter', () => { inWin = true; });
-    (function loop() { if (isTabActive && inWin) { cgx += (gx - cgx)*0.08; cgy += (gy - cgy)*0.08; g.style.left = cgx+'px'; g.style.top = cgy+'px'; } requestAnimationFrame(loop); })();
-  })();
+  // MAGNETIC BUTTONS removido - botões fixos
+  // CURSOR GLOW removido
 });
 
 /* =========================================================

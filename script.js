@@ -2310,22 +2310,7 @@ if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
                 "Quando quiser, o WhatsApp da Kodaros está a um clique.</p>";
         }
         box.innerHTML = html;
-
-        // vitrine 1+2
-        var rec = getRecommendation(state.profile, state.answers);
-        var recBlock = document.getElementById("recommended-block");
-        if (recBlock) {
-            var recHtml = '<div class="recommended">';
-            recHtml += productCardHTML(rec.primary, "primary");
-            recHtml += '<div class="rec-grid">';
-            recHtml += productCardHTML(rec.secondary[0], "secondary");
-            recHtml += productCardHTML(rec.secondary[1], "secondary");
-            recHtml += '</div>';
-            recHtml += '<p class="rec-footnote">Todos os e-books são entregues pela Hotmart com acesso imediato. Pagamento 100% seguro. <a href="' + SITE_BASE + '/#ebooks" target="_blank" rel="noopener">Ver catálogo completo com 8 títulos →</a></p>';
-            recHtml += '</div>';
-            recBlock.innerHTML = recHtml;
-        }
-    }
+}
 
     /* ---------- EVENTOS ---------- */
     document.querySelectorAll("[data-next]").forEach(function (btn) {

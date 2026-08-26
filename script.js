@@ -32,12 +32,14 @@ document.addEventListener('DOMContentLoaded', function(){
     }
   })();
 
-  // SMOOTH SCROLL
+  // SMOOTH SCROLL (ignora abas principais, que têm handler próprio)
   (function(){
     const nav=document.getElementById('navbar');
     document.querySelectorAll('a[href^="#"]').forEach(a=>{
       a.addEventListener('click', function(e){
         const href=this.getAttribute('href'); if(href==='#') return;
+        const clean=href.replace('#','');
+        if(['biblioteca','ferramentas','diagnostico'].includes(clean)) return; // deixa o handler das abas cuidar
         const t=document.querySelector(href); if(t){ e.preventDefault(); const h=nav?nav.offsetHeight:0; const p=t.getBoundingClientRect().top+window.pageYOffset-h-18; window.scrollTo({top:p,behavior:'smooth'}); }
       });
     });
@@ -208,7 +210,11 @@ function handleContact(e){
     });
     if(location.hash!=='#'+target) history.replaceState(null,'','#'+target);
     const explorar=document.getElementById('explorar');
-    if(explorar && document.activeElement && document.activeElement.classList.contains('platform-tab')){ explorar.scrollIntoView({behavior:'smooth', block:'start'}); }
+    // Sempre rola até as abas ao trocar de painel (footer ou tabs)
+    if(explorar){
+      const top = explorar.getBoundingClientRect().top + window.pageYOffset - (document.getElementById('navbar')?.offsetHeight || 0) - 12;
+      window.scrollTo({top, behavior:'smooth'});
+    }
   }
   tabs.forEach(btn=>{
     btn.addEventListener('click', ()=>activate(btn.dataset.target));

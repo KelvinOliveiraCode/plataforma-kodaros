@@ -187,7 +187,7 @@ function handleContact(e){
         c.classList.add('hidden-by-cat');
       }
     });
-    const visible = cat==='all' ? document.querySelectorAll('#panel-ferramentas .tool').length : document.querySelectorAll('#panel-ferramentas .tool-category:not([hidden]) .tool').length;
+    const visible = cat==='all' ? document.querySelectorAll('#panel-ferramentas article.tool').length : document.querySelectorAll('#panel-ferramentas .tool-category:not([hidden]) article.tool').length;
     const meta = document.getElementById('searchMeta');
     if(meta) meta.textContent = visible + ' ferramentas';
   }

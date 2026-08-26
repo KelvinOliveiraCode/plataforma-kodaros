@@ -1,5 +1,5 @@
-﻿// PLATAFORMA KODAROS — Script unificado
-// Gold scroll + Navbar + Reveal + Biblioteca + Ágora + Oráculo
+// PLATAFORMA KODAROS — Script unificado
+// Gold scroll + Navbar + Reveal + Biblioteca + Ágora + Diagnóstico
 document.addEventListener('DOMContentLoaded', function(){
   const isTouch = window.matchMedia('(pointer: coarse)').matches;
   let isTabActive = true;
@@ -206,20 +206,15 @@ function handleContact(e){
       if(on){ p.hidden=false; p.classList.add('active'); }
       else { p.hidden=true; p.classList.remove('active'); }
     });
-    // update hash without scrolling
     if(location.hash!=='#'+target) history.replaceState(null,'','#'+target);
-    // scroll to tabs
     const explorar=document.getElementById('explorar');
-    // scroll suave apenas no clique, não no hashchange
     if(explorar && document.activeElement && document.activeElement.classList.contains('platform-tab')){ explorar.scrollIntoView({behavior:'smooth', block:'start'}); }
   }
   tabs.forEach(btn=>{
     btn.addEventListener('click', ()=>activate(btn.dataset.target));
   });
-  // open from hash
   const hash=location.hash.replace('#','');
   if(['biblioteca','ferramentas','diagnostico'].includes(hash)) activate(hash);
-  // nav links trigger tabs
   document.querySelectorAll('a[href^="#"]').forEach(a=>{
     const href=a.getAttribute('href').replace('#','');
     if(['biblioteca','ferramentas','diagnostico'].includes(href)){
@@ -241,17 +236,18 @@ document.addEventListener('keydown', (e)=>{
     e.preventDefault(); const s=document.getElementById('toolsSearch'); if(s) s.focus();
   }
 });
+
 /* =========================================================
-   KODAROS FERRAMENTAS â€” LÃ³gica das ferramentas (client-side)
+   KODAROS FERRAMENTAS — Lógica das ferramentas (client-side)
    ========================================================= */
 
 /* ---------- Helpers ---------- */
 function brl(n){
-  if(!isFinite(n)) return 'â€“';
+  if(!isFinite(n)) return '–';
   return 'R$ ' + n.toLocaleString('pt-BR',{minimumFractionDigits:2, maximumFractionDigits:2});
 }
 function num(n, d=1){
-  if(!isFinite(n)) return 'â€“';
+  if(!isFinite(n)) return '–';
   return n.toLocaleString('pt-BR',{minimumFractionDigits:0, maximumFractionDigits:d});
 }
 function pct(n){ return num(n,1) + '%'; }
@@ -363,7 +359,7 @@ window.addEventListener('hashchange', function(){
         e.preventDefault();
         const tab = tool.closest('.tab-panel')?.id || 'aquisicao';
         const url = location.origin + location.pathname + '#' + tab + '/' + id;
-        const text = encodeURIComponent(h3.textContent + ' â€” Ferramentas KODAROS ' + url);
+        const text = encodeURIComponent(h3.textContent + ' — Ferramentas KODAROS ' + url);
         window.open('https://wa.me/?text=' + text, '_blank');
         trackEvent('share_whatsapp', {tool: id});
       });
@@ -660,7 +656,7 @@ function exportToolResult(toolId, btn){
     return;
   }
   // collect visible result texts
-  let lines=[h3,'', 'â€” Ferramentas KODAROS â€”', ''];
+  let lines=[h3,'', '— Ferramentas KODAROS —', ''];
   tool.querySelectorAll('.result .res').forEach(function(r){
     const v=r.querySelector('.v')?.textContent?.trim();
     const l=r.querySelector('.l')?.textContent?.trim();
@@ -690,7 +686,7 @@ function exportToolResult(toolId, btn){
     x.fillStyle='#E6E8EE'; x.font='700 22px Figtree, Arial, sans-serif';
     x.fillText(h3, 32, 48);
     x.fillStyle='#9AA3B8'; x.font='500 13px Figtree, Arial, sans-serif';
-    x.fillText('KODAROS â€¢ kodarosferramentas', 32, 70);
+    x.fillText('KODAROS • kodarosferramentas', 32, 70);
     x.fillStyle='#E6E8EE'; x.font='400 15px Figtree, Arial, sans-serif';
     let y=110;
     x.textBaseline='top';
@@ -726,14 +722,14 @@ function exportToolResult(toolId, btn){
   }
 }
 
-/* ---------- Recolher abas (removido â€” botÃ£o recolher nÃ£o Ã© mais necessÃ¡rio) ---------- */
+/* ---------- Recolher abas (removido — botão recolher não é mais necessário) ---------- */
 (function(){
   const tabsEl = document.getElementById('tabs');
   if (!tabsEl) return;
   tabsEl.classList.remove('collapsed');
 })();
 
-/* ---------- Auto-cÃ¡lculo + ValidaÃ§Ã£o + PersistÃªncia ---------- */
+/* ---------- Auto-cálculo + Validação + Persistência ---------- */
 (function initAutoCalcAndPersist(){
   // harden number inputs
   document.querySelectorAll('.tool input[type="number"]').forEach(function(el){
@@ -781,7 +777,7 @@ function exportToolResult(toolId, btn){
         field.classList.add('has-error');
         let err = field.querySelector('.field-error');
         if(!err){ err=document.createElement('div'); err.className='field-error'; field.appendChild(err); }
-        err.textContent = n < 0 ? 'Valor nÃ£o pode ser negativo.' : 'Valor invÃ¡lido.';
+        err.textContent = n < 0 ? 'Valor não pode ser negativo.' : 'Valor inválido.';
         return false;
       } else {
         field.classList.remove('has-error');
@@ -873,7 +869,7 @@ function exportToolResult(toolId, btn){
   });
 })();
 
-/* ---------- Helpers de seguranÃ§a ---------- */
+/* ---------- Helpers de segurança ---------- */
 function escapeHTML(s){
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
@@ -913,14 +909,14 @@ function fallbackCopy(text, cb){
 }
 
 /* =========================================================
-   TAB 1 â€” AQUISIÃ‡ÃƒO & TRÃFEGO
+   TAB 1 — AQUISIÇÃO & TRÁFEGO
    ========================================================= */
 
 /* 1. CAC & LTV (portado) */
 function calcCAC(){
   const gasto=numv('c1_gasto'), cli=numv('c1_cli'), ticket=numv('c1_ticket'),
         freq=numv('c1_freq'), ret=numv('c1_ret'), marg=numv('c1_marg')/100;
-  if(!cli){ alert('Informe o nÃºmero de clientes adquiridos.'); return; }
+  if(!cli){ alert('Informe o número de clientes adquiridos.'); return; }
   const cac=gasto/cli;
   const ltv=ticket*freq*(ret/12);
   const ratio=ltv/cac;
@@ -975,7 +971,7 @@ function calcFunil(){
     const conv=taxas[i];
     const sairam=entraram*(1-conv);
     const tr=document.createElement('tr');
-    const label = (nomes[i]||('Etapa '+(i+1))) + ' â†’ ' + (nomes[i+1]||'Venda');
+    const label = (nomes[i]||('Etapa '+(i+1))) + ' → ' + (nomes[i+1]||'Venda');
     [label, num(entraram), pct(conv*100), num(sairam)].forEach((v,idx)=>{
       const td=document.createElement('td');
       td.textContent=v;
@@ -990,7 +986,7 @@ function calcFunil(){
   if(tb.children[gargaloIdx]) tb.children[gargaloIdx].classList.add('gargalo');
   const trf=document.createElement('tr');
   trf.className='total';
-  ['Vendas totais', num(entraram), 'â€“', 'â€“'].forEach((v,idx)=>{
+  ['Vendas totais', num(entraram), '–', '–'].forEach((v,idx)=>{
     const td=document.createElement('td'); td.textContent=v;
     td.style.textAlign = idx===0 ? 'left' : 'right';
     trf.appendChild(td);
@@ -1018,7 +1014,7 @@ function calcROAS(){
 function calcBreakEven(){
   const custo=numv('be_custo'), ticket=numv('be_ticket'), cv=numv('be_cv');
   const mc=ticket-cv;
-  if(mc<=0){ alert('O ticket deve ser maior que o custo variÃ¡vel para haver margem.'); return; }
+  if(mc<=0){ alert('O ticket deve ser maior que o custo variável para haver margem.'); return; }
   const cli=custo/mc;
   const rec=cli*ticket;
   const beRoas=ticket/mc;
@@ -1030,19 +1026,19 @@ function calcBreakEven(){
   show('be_res');
 }
 
-/* 6. Conversor de MÃ©tricas */
+/* 6. Conversor de Métricas */
 function calcMetrica(){
   const imp=numv('m_imp'), custo=numv('m_custo'), cli=numv('m_cli'),
         conv=numv('m_conv'), lead=numv('m_lead');
-  document.getElementById('m_cpm').textContent=imp?brl(custo/imp*1000):'â€“';
-  document.getElementById('m_cpc').textContent=cli?brl(custo/cli):'â€“';
-  document.getElementById('m_ctr').textContent=imp?pct(cli/imp*100):'â€“';
-  document.getElementById('m_cpa').textContent=conv?brl(custo/conv):'â€“';
-  document.getElementById('m_cpl').textContent=lead?brl(custo/lead):'â€“';
+  document.getElementById('m_cpm').textContent=imp?brl(custo/imp*1000):'–';
+  document.getElementById('m_cpc').textContent=cli?brl(custo/cli):'–';
+  document.getElementById('m_ctr').textContent=imp?pct(cli/imp*100):'–';
+  document.getElementById('m_cpa').textContent=conv?brl(custo/conv):'–';
+  document.getElementById('m_cpl').textContent=lead?brl(custo/lead):'–';
   show('m_res');
 }
 
-/* 7. Planejador de OrÃ§amento */
+/* 7. Planejador de Orçamento */
 function calcOrcamento(){
   const total=numv('o_total');
   const fb=numv('o_fb'), gg=numv('o_gg'), tk=numv('o_tk');
@@ -1059,12 +1055,12 @@ function calcOrcamento(){
 function buildUTM(){
   let url=(val('u_url')||'').trim();
   if(!url){ alert('Informe a URL base.'); return; }
-  try{ new URL(url); } catch(e){ alert('URL base invÃ¡lida. Use https://...'); return; }
+  try{ new URL(url); } catch(e){ alert('URL base inválida. Use https://...'); return; }
   const params={};
   const map={'u_source':'utm_source','u_medium':'utm_medium','u_camp':'utm_campaign','u_term':'utm_term','u_cont':'utm_content'};
   for(const k in map){ const v=(document.getElementById(k).value||'').trim(); if(v) params[map[k]]=v; }
   const keys=Object.keys(params);
-  if(keys.length===0){ alert('Preencha ao menos um parÃ¢metro UTM.'); return; }
+  if(keys.length===0){ alert('Preencha ao menos um parâmetro UTM.'); return; }
   const qs=keys.map(k=>k+'='+encodeURIComponent(params[k])).join('&');
   let out=url;
   out += url.indexOf('?')>=0 ? (url.endsWith('?')||url.endsWith('&') ? '' : '&') : '?';
@@ -1075,15 +1071,15 @@ function buildUTM(){
 
 /* 9. Auditor CRO */
 const CRO_ITEMS=[
-  'TÃ­tulo principal com benefÃ­cio claro',
-  'Chamada para aÃ§Ã£o (CTA) visÃ­vel acima da dobra',
-  'Prova social (depoimentos/avaliaÃ§Ãµes)',
+  'Título principal com benefício claro',
+  'Chamada para ação (CTA) visível acima da dobra',
+  'Prova social (depoimentos/avaliações)',
   'Oferta ou garantia destacada',
-  'FormulÃ¡rio curto (poucos campos)',
-  'Carregamento rÃ¡pido (<3s)',
+  'Formulário curto (poucos campos)',
+  'Carregamento rápido (<3s)',
   'Responsiva em mobile',
-  'UrgÃªncia ou escassez legÃ­tima',
-  'Texto focado em benefÃ­cios (nÃ£o sÃ³ caracterÃ­sticas)',
+  'Urgência ou escassez legítima',
+  'Texto focado em benefícios (não só características)',
   'Pixel de rastreamento/configurado'
 ];
 (function(){
@@ -1099,9 +1095,9 @@ function calcCRO(){
   document.getElementById('cro_chk').textContent=ok+'/'+CRO_ITEMS.length;
   document.getElementById('cro_bar').style.width=score+'%';
   let msg, cls;
-  if(score>=80){ msg='Excelente! Sua pÃ¡gina tem os principais elementos de conversÃ£o.'; cls='good'; }
-  else if(score>=50){ msg='RazoÃ¡vel. HÃ¡ itens importantes a ajustar para subir a conversÃ£o.'; cls=''; }
-  else { msg='AtenÃ§Ã£o: faltam elementos crÃ­ticos de conversÃ£o na sua pÃ¡gina.'; cls='bad'; }
+  if(score>=80){ msg='Excelente! Sua página tem os principais elementos de conversão.'; cls='good'; }
+  else if(score>=50){ msg='Razoável. Há itens importantes a ajustar para subir a conversão.'; cls=''; }
+  else { msg='Atenção: faltam elementos críticos de conversão na sua página.'; cls='bad'; }
   const box=document.getElementById('cro_box');
   box.className='res '+(score>=80?'good':(score<50?'bad':''));
   document.getElementById('cro_msg').textContent=msg;
@@ -1110,7 +1106,7 @@ function calcCRO(){
 }
 
 /* =========================================================
-   TAB 2 â€” LANÃ‡AMENTO
+   TAB 2 — LANÇAMENTO
    ========================================================= */
 
 /* 1. Cronograma */
@@ -1118,9 +1114,9 @@ function fmtDate(d){ return d.toLocaleDateString('pt-BR'); }
 function addDays(date, days){ const d=new Date(date); d.setDate(d.getDate()+days); return d; }
 function calcCronograma(){
   const ini=val('cr_ini');
-  if(!ini){ alert('Escolha a data de inÃ­cio.'); return; }
+  if(!ini){ alert('Escolha a data de início.'); return; }
   let d=new Date(ini+'T00:00:00');
-  const fases=[['PrÃ©-lanÃ§amento',numv('cr_pre')],['Abertura',numv('cr_abre')],['Pico',numv('cr_pico')],['Fechamento',numv('cr_fecha')]];
+  const fases=[['Pré-lançamento',numv('cr_pre')],['Abertura',numv('cr_abre')],['Pico',numv('cr_pico')],['Fechamento',numv('cr_fecha')]];
   const tb=document.querySelector('#cr_tbl tbody'); tb.innerHTML='';
   fases.forEach(function(f){
     const inicio=d;
@@ -1160,14 +1156,14 @@ function calcOferta(){
 }
 
 /* =========================================================
-   TAB 3 â€” FINANCEIRO
+   TAB 3 — FINANCEIRO
    ========================================================= */
 
-/* 1. PrecificaÃ§Ã£o */
+/* 1. Precificação */
 function calcPrecificacao(){
   const custo=numv('pr_custo'), fixo=numv('pr_fixo'), marg=numv('pr_marg')/100, imp=numv('pr_imp')/100;
   const denom=1-(marg+imp);
-  if(denom<=0){ alert('Margem + impostos nÃ£o podem chegar a 100%.'); return; }
+  if(denom<=0){ alert('Margem + impostos não podem chegar a 100%.'); return; }
   const preco=(custo+fixo)/denom;
   document.getElementById('pr_preco').textContent=brl(preco);
   document.getElementById('pr_lucro').textContent=brl(preco-custo-fixo);
@@ -1177,7 +1173,7 @@ function calcPrecificacao(){
 /* 2. Margem de Lucro */
 function calcMargem(){
   const preco=numv('ml_preco'), custo=numv('ml_custo');
-  if(!preco){ alert('Informe o preÃ§o de venda.'); return; }
+  if(!preco){ alert('Informe o preço de venda.'); return; }
   const m=(preco-custo)/preco*100;
   document.getElementById('ml_marg').textContent=pct(m);
   document.getElementById('ml_lucro').textContent=brl(preco-custo);
@@ -1215,13 +1211,13 @@ function calcCapitalGiro(){
 }
 
 /* =========================================================
-   TAB 4 â€” VENDAS
+   TAB 4 — VENDAS
    ========================================================= */
 
 /* 1. Metas */
 function calcMetas(){
   const meta=numv('mt_meta'), ticket=numv('mt_ticket'), conv=numv('mt_conv')/100, dias=numv('mt_dias');
-  if(!ticket||!conv){ alert('Informe ticket mÃ©dio e conversÃ£o.'); return; }
+  if(!ticket||!conv){ alert('Informe ticket médio e conversão.'); return; }
   const unid=meta/ticket;
   const vis=unid/conv;
   document.getElementById('mt_unid').textContent=num(unid);
@@ -1243,20 +1239,20 @@ function calcDesconto(){
   show('sd_res');
 }
 
-/* 3. Ticket MÃ©dio */
+/* 3. Ticket Médio */
 function calcTicket(){
   const meta=numv('tm_meta'), cli=numv('tm_cli');
-  if(!cli){ alert('Informe o nÃºmero de clientes.'); return; }
+  if(!cli){ alert('Informe o número de clientes.'); return; }
   document.getElementById('tm_ticket').textContent=brl(meta/cli);
   document.getElementById('tm_check').textContent='R$ '+num(meta);
   show('tm_res');
 }
 
 /* =========================================================
-   TAB 5 â€” SUPORTE
+   TAB 5 — SUPORTE
    ========================================================= */
 
-/* 1. NPS / Ãndice de ReclamaÃ§Ãµes */
+/* 1. NPS / Índice de Reclamações */
 function calcNPS(){
   const prom=numv('n_prom'), pass=numv('n_pass'), det=numv('n_det');
   const totalResp=prom+pass+det;
@@ -1274,11 +1270,11 @@ function calcNPS(){
 function gerarResposta(){
   const nome=val('gr_nome')||'Cliente', canal=val('gr_canal')||'', prob=val('gr_prob')||'',
         acao=val('gr_acao')||'', prazo=val('gr_prazo')||'', comp=val('gr_comp')||'';
-  let txt=`OlÃ¡, ${nome}!\n\n`;
-  txt+=`Agradecemos por nos acionar pelo ${canal} e lamento pelo ocorrido com relaÃ§Ã£o a: ${prob}.\n\n`;
-  txt+=`Entendemos a importÃ¢ncia do seu tempo e jÃ¡ tomamos a seguinte atitude: ${acao}, no prazo de ${prazo}.`;
+  let txt=`Olá, ${nome}!\n\n`;
+  txt+=`Agradecemos por nos acionar pelo ${canal} e lamento pelo ocorrido com relação a: ${prob}.\n\n`;
+  txt+=`Entendemos a importância do seu tempo e já tomamos a seguinte atitude: ${acao}, no prazo de ${prazo}.`;
   if(comp) txt+=` Como forma de compensar, disponibilizamos: ${comp}.`;
-  txt+=`\n\nSegueremos acompanhando atÃ© a resoluÃ§Ã£o. Conte com a KODAROS.`;
+  txt+=`\n\nSegueremos acompanhando até a resolução. Conte com a KODAROS.`;
   document.getElementById('gr_out').textContent=txt;
   show('gr_res');
 }
@@ -1297,18 +1293,18 @@ function calcSLA(){
 }
 
 /* =========================================================
-   TAB 6 â€” OPERAÃ‡ÃƒO
+   TAB 6 — OPERAÇÃO
    ========================================================= */
 
 /* 1. Checklist Semanal */
 const CHK_ITEMS=[
-  'Revisei nÃºmeros de receita e custos da semana',
-  'Acompanhei pipeline de vendas e conversÃ£o',
-  'Respondi reclamaÃ§Ãµes e tickets de suporte',
+  'Revisei números de receita e custos da semana',
+  'Acompanhei pipeline de vendas e conversão',
+  'Respondi reclamações e tickets de suporte',
   'Atualizei tarefas da equipe (ritual M3)',
-  'Planejei a prÃ³xima semana (metas e prioridades)',
-  'Analisei indicadores de trÃ¡fego/marketing',
-  'Cuidei de finanÃ§as (contas a pagar/receber)',
+  'Planejei a próxima semana (metas e prioridades)',
+  'Analisei indicadores de tráfego/marketing',
+  'Cuidei de finanças (contas a pagar/receber)',
   'Reservei tempo para melhoria de processo'
 ];
 (function(){
@@ -1355,12 +1351,12 @@ function calcPareto(){
   itens.forEach(function(x){
     acum+=x.v;
     const pctAcum = total? acum/total*100 : 0;
-    // vital = itens que compÃµem atÃ© cruzar 80%
+    // vital = itens que compõem até cruzar 80%
     const vital = !reached80 && total>0;
     if(vital) vitalCount++;
     if(pctAcum >= 80) reached80 = true;
     const tr=document.createElement('tr');
-    [x.n, num(x.v), pct(pctAcum), vital?'â­ Sim':'â€“'].forEach((v,idx)=>{
+    [x.n, num(x.v), pct(pctAcum), vital?'⭐ Sim':'–'].forEach((v,idx)=>{
       const td=document.createElement('td'); td.textContent=v;
       td.style.textAlign = idx===0 ? 'left' : 'right';
       tr.appendChild(td);
@@ -1368,7 +1364,7 @@ function calcPareto(){
     if(vital) tr.classList.add('gargalo');
     tb.appendChild(tr);
   });
-  document.getElementById('pa_msg').textContent='PrincÃ­pio de Pareto: '+vitalCount+' de '+itens.length+' causa(s) respondem por atÃ© 80% do impacto. Foque nelas primeiro.';
+  document.getElementById('pa_msg').textContent='Princípio de Pareto: '+vitalCount+' de '+itens.length+' causa(s) respondem por até 80% do impacto. Foque nelas primeiro.';
   show('pa_res');
 }
 
@@ -1379,14 +1375,14 @@ function calcPareto(){
 /* ---- TAB 1 extras ---- */
 function calcCPL(){
   const ticket=numv('cpl_ticket'), marg=numv('cpl_marg')/100, conv=numv('cpl_conv')/100;
-  if(!conv){ alert('Informe a conversÃ£o leadâ†’venda.'); return; }
+  if(!conv){ alert('Informe a conversão lead→venda.'); return; }
   const cacMax=ticket*marg, cpl=cacMax*conv;
   document.getElementById('cpl_val').textContent=brl(cpl);
   document.getElementById('cpl_cac').textContent=brl(cacMax);
   show('cpl_res');
 }
 function gerarAdCopy(){
-  const prod=val('ad_prod')||'Seu produto', pub=val('ad_pub')||'seu pÃºblico',
+  const prod=val('ad_prod')||'Seu produto', pub=val('ad_pub')||'seu público',
         dor=val('ad_dor')||'', ben=val('ad_ben')||'', prova=val('ad_prova')||'';
   let t=`Para ${pub} que sofrem com ${dor}:\n\n${prod} entrega ${ben}.\n\nComprovado por ${prova}.\n\nClique e descubra como.`;
   document.getElementById('ad_out').textContent=t;
@@ -1394,9 +1390,9 @@ function gerarAdCopy(){
 }
 function simAB(){
   const a=numv('ab_ctra'), b=numv('ab_ctrb'), imp=numv('ab_imp');
-  if(!imp){ alert('Informe as impressÃµes.'); return; }
+  if(!imp){ alert('Informe as impressões.'); return; }
   const cliA=imp*a/100, cliB=imp*b/100;
-  document.getElementById('ab_win').textContent='VariaÃ§Ã£o '+(b>=a?'B':'A');
+  document.getElementById('ab_win').textContent='Variação '+(b>=a?'B':'A');
   document.getElementById('ab_cli').textContent='+'+num(Math.abs(cliB-cliA));
   document.getElementById('ab_box').className='res '+(Math.abs(b-a)>0?'good':'');
   show('ab_res');
@@ -1418,7 +1414,7 @@ function calcCronInvertido(){
   const fim=val('ci_fim');
   if(!fim){ alert('Escolha a data de fechamento.'); return; }
   let d=new Date(fim+'T00:00:00');
-  const fases=[['Fechamento',numv('ci_fecha')],['Pico',numv('ci_pico')],['Abertura',numv('ci_abre')],['PrÃ©-lanÃ§amento',numv('ci_pre')]];
+  const fases=[['Fechamento',numv('ci_fecha')],['Pico',numv('ci_pico')],['Abertura',numv('ci_abre')],['Pré-lançamento',numv('ci_pre')]];
   const tb=document.querySelector('#ci_tbl tbody'); tb.innerHTML='';
   for(let i=fases.length-1;i>=0;i--){
     const dur=fases[i][1], termino=d, inicio=addDays(d, -dur);
@@ -1439,13 +1435,13 @@ function calcCPE(){
   show('cpe_res');
 }
 function gerarSeqEmail(){
-  const nome=val('se_nome')||'LanÃ§amento';
+  const nome=val('se_nome')||'Lançamento';
   const e=[
-    `E-mail 1 â€” Aquecimento: conteÃºdo educativo sobre o problema que ${nome} resolve.`,
-    `E-mail 2 â€” HistÃ³ria: mostre a jornada e a transformaÃ§Ã£o do seu mÃ©todo.`,
-    `E-mail 3 â€” Abertura: divulgue que as inscriÃ§Ãµes abriram, com benefÃ­cios.`,
-    `E-mail 4 â€” Pico: apresente depoimentos e a oferta principal.`,
-    `E-mail 5 â€” Fechamento: Ãºltimo aviso de encerramento e bÃ´nus.`
+    `E-mail 1 — Aquecimento: conteúdo educativo sobre o problema que ${nome} resolve.`,
+    `E-mail 2 — História: mostre a jornada e a transformação do seu método.`,
+    `E-mail 3 — Abertura: divulgue que as inscrições abriram, com benefícios.`,
+    `E-mail 4 — Pico: apresente depoimentos e a oferta principal.`,
+    `E-mail 5 — Fechamento: último aviso de encerramento e bônus.`
   ];
   document.getElementById('se_out').textContent=e.join('\n\n');
   show('se_res');
@@ -1455,7 +1451,7 @@ function gerarSeqEmail(){
 function calcEquilibrio(){
   const fixo=numv('pe_fixo'), preco=numv('pe_preco'), cv=numv('pe_cv');
   const mc=preco-cv;
-  if(mc<=0){ alert('O preÃ§o deve ser maior que o custo variÃ¡vel.'); return; }
+  if(mc<=0){ alert('O preço deve ser maior que o custo variável.'); return; }
   document.getElementById('pe_cli').textContent=num(fixo/mc);
   document.getElementById('pe_marg').textContent=brl(mc);
   show('pe_res');
@@ -1463,7 +1459,7 @@ function calcEquilibrio(){
 function calcJuros(){
   const aporte=numv('jc_aporte'), taxa=numv('jc_taxa')/100, meses=Math.max(1,Math.round(numv('jc_mes')));
   let total=0;
-  // aporte no fim do perÃ­odo: rende a partir do prÃ³ximo mÃªs
+  // aporte no fim do período: rende a partir do próximo mês
   for(let i=1;i<=meses;i++){ total = total*(1+taxa) + aporte; }
   document.getElementById('jc_total').textContent=brl(total);
   document.getElementById('jc_rend').textContent=brl(total-aporte*meses);
@@ -1479,7 +1475,7 @@ function calcMRR(){
   let subs=numv('as_subs');
   const ticket=numv('as_ticket'), novos=numv('as_novos'), churn=Math.min(0.95, numv('as_churn')/100);
   const meses=Math.max(1,Math.round(numv('as_mes')));
-  if(!subs){ alert('Informe o nÃºmero de assinantes atuais.'); return; }
+  if(!subs){ alert('Informe o número de assinantes atuais.'); return; }
   const mrr0=subs*ticket;
   for(let i=0;i<meses;i++){ subs=subs*(1-churn)+novos; }
   const mrrF=subs*ticket;
@@ -1494,8 +1490,8 @@ function calcMRR(){
 
 /* ---- TAB 4 extras ---- */
 function gerarScript(){
-  const obj=val('so_obj')||'objeÃ§Ã£o', prod=val('so_prod')||'produto', ben=val('so_ben')||'', prova=val('so_prova')||'';
-  let t=`Cliente: "${obj}".\n\nEu entendo. Muitos sentem isso no inÃ­cio.\nO que o ${prod} entrega Ã© justamente ${ben}.\nTemos ${prova} que comprovam o resultado.\nPosso te mostrar como fazer sentido para o seu caso?`;
+  const obj=val('so_obj')||'objeção', prod=val('so_prod')||'produto', ben=val('so_ben')||'', prova=val('so_prova')||'';
+  let t=`Cliente: "${obj}".\n\nEu entendo. Muitos sentem isso no início.\nO que o ${prod} entrega é justamente ${ben}.\nTemos ${prova} que comprovam o resultado.\nPosso te mostrar como fazer sentido para o seu caso?`;
   document.getElementById('so_out').textContent=t;
   show('so_res');
 }
@@ -1517,15 +1513,15 @@ function calcFollow(){
 }
 function calcChurn(){
   const ini=numv('ch_ini'), perd=numv('ch_perd'), ticket=numv('ch_ticket'), marg=numv('ch_marg')/100;
-  if(!ini){ alert('Informe o nÃºmero de clientes no inÃ­cio do mÃªs.'); return; }
+  if(!ini){ alert('Informe o número de clientes no início do mês.'); return; }
   const churn=perd/ini*100;
   const retencao=Math.max(0, 100-churn);
   const lifetime=churn>0 ? 100/churn : Infinity;
   const ltv=lifetime===Infinity ? Infinity : ticket*marg*lifetime;
   document.getElementById('ch_tx').textContent=pct(churn);
   document.getElementById('ch_ret').textContent=pct(retencao);
-  document.getElementById('ch_life').textContent=isFinite(lifetime)?num(lifetime):'âˆž';
-  document.getElementById('ch_ltv').textContent=isFinite(ltv)?brl(ltv):'âˆž';
+  document.getElementById('ch_life').textContent=isFinite(lifetime)?num(lifetime):'∞';
+  document.getElementById('ch_ltv').textContent=isFinite(ltv)?brl(ltv):'∞';
   document.getElementById('ch_box').className='res '+(churn<=5?'good':(churn>15?'bad':''));
   show('ch_res');
 }
@@ -1533,11 +1529,11 @@ function calcChurn(){
 /* ---- TAB 5 extras ---- */
 function gerarPesquisa(){
   const p=[
-    'De 1 a 5, quÃ£o satisfeito vocÃª estÃ¡ com o atendimento?',
-    'O problema relatado foi resolvido na primeira interaÃ§Ã£o?',
+    'De 1 a 5, quão satisfeito você está com o atendimento?',
+    'O problema relatado foi resolvido na primeira interação?',
     'O tempo de resposta atendeu sua expectativa?',
-    'VocÃª recomendaria a KODAROS para um colega? (0-10)',
-    'O que poderÃ­amos melhorar no suporte?'
+    'Você recomendaria a KODAROS para um colega? (0-10)',
+    'O que poderíamos melhorar no suporte?'
   ];
   document.getElementById('ps_out').textContent=p.map((x,i)=>(i+1)+'. '+x).join('\n');
   show('ps_res');
@@ -1549,21 +1545,21 @@ function calcValorRec(){
 }
 function gerarRespostaPub(){
   const nome=val('rp_nome')||'Cliente', canal=val('rp_canal')||'', prob=val('rp_prob')||'';
-  let t=`Oi, ${nome}! Obrigado por compartilhar isso no ${canal}.\nLamentamos o ocorrido com: ${prob}.\nJÃ¡ identificamos a causa e vamos resolver. Pode nos chamar na DM para alinharmos a soluÃ§Ã£o?`;
+  let t=`Oi, ${nome}! Obrigado por compartilhar isso no ${canal}.\nLamentamos o ocorrido com: ${prob}.\nJá identificamos a causa e vamos resolver. Pode nos chamar na DM para alinharmos a solução?`;
   document.getElementById('rp_out').textContent=t;
   show('rp_res');
 }
 
 /* ---- TAB 6 extras ---- */
 function copiarSWOT(){
-  const t=`SWOT\n\nForÃ§as:\n${val('sw_forcas')}\n\nFraquezas:\n${val('sw_fraquezas')}\n\nOportunidades:\n${val('sw_op')}\n\nAmeaÃ§as:\n${val('sw_am')}`;
+  const t=`SWOT\n\nForças:\n${val('sw_forcas')}\n\nFraquezas:\n${val('sw_fraquezas')}\n\nOportunidades:\n${val('sw_op')}\n\nAmeaças:\n${val('sw_am')}`;
   navigator.clipboard.writeText(t).then(function(){
     if(event && event.target){ event.target.textContent='Copiado!'; setTimeout(function(){ event.target.textContent='Copiar SWOT'; }, 1500); }
   });
 }
 function calcHoraFat(){
   const meta=numv('hf_meta'), horas=numv('hf_horas'), marg=numv('hf_marg')/100;
-  if(!horas){ alert('Informe as horas faturÃ¡veis.'); return; }
+  if(!horas){ alert('Informe as horas faturáveis.'); return; }
   document.getElementById('hf_val').textContent=brl(meta/horas*(1+marg));
   show('hf_res');
 }
@@ -1582,7 +1578,7 @@ function calcAutomacao(){
   const roi12=investAno>0 ? ((liq*12-investAno)/investAno*100) : 0;
   document.getElementById('au_bruta').textContent=brl(bruta);
   document.getElementById('au_liq').textContent=brl(liq);
-  document.getElementById('au_payback').textContent=isFinite(payback)?num(payback):'â€“';
+  document.getElementById('au_payback').textContent=isFinite(payback)?num(payback):'–';
   document.getElementById('au_roi').textContent=(roi12>=0?'+':'')+pct(roi12);
   document.getElementById('au_box').className='res '+(liq>0?'good':(liq<0?'bad':''));
   show('au_res');
@@ -1603,13 +1599,13 @@ function calcROIConteudo(){
   show('rc_res');
 }
 const SEO_ITEMS=[
-  'TÃ­tulo da pÃ¡gina com palavra-chave principal',
-  'Meta description Ãºnica e atrativa',
-  'URL amigÃ¡vel (sem caracteres especiais)',
+  'Título da página com palavra-chave principal',
+  'Meta description única e atrativa',
+  'URL amigável (sem caracteres especiais)',
   'Imagens com atributo alt descritivo',
   'Estrutura de headings (H1/H2/H3)',
-  'ConteÃºdo original e atualizado',
-  'Links internos para pÃ¡ginas relevantes',
+  'Conteúdo original e atualizado',
+  'Links internos para páginas relevantes',
   'Velocidade de carregamento otimizada',
   'Sitemap e robots.txt configurados',
   'Dados estruturados (schema)'
@@ -1630,14 +1626,14 @@ function calcSEO(){
 }
 
 /* =========================================================
-   MÃ“DULOS DE IDENTIDADE VISUAL (espelham o site principal)
+   MÓDULOS DE IDENTIDADE VISUAL (espelham o site principal)
    ========================================================= */
 document.addEventListener('DOMContentLoaded', function() {
   const isTouch = window.matchMedia('(pointer: coarse)').matches;
   let isTabActive = true;
   document.addEventListener('visibilitychange', () => { isTabActive = !document.hidden; });
 
-   /* ---- GALÃXIA ANIMADA ---- */
+   /* ---- GALÁXIA ANIMADA ---- */
   (function initGalaxy() {
     if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const canvas = document.getElementById('particle-canvas');
@@ -1716,7 +1712,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function handle() {
       const cur = window.pageYOffset;
       if (cur > 30) navbar.classList.add('scrolled'); else navbar.classList.remove('scrolled');
-      // mantÃ©m navbar sempre visÃ­vel e fixa no topo (sem esconder no scroll)
+      // mantém navbar sempre visível e fixa no topo (sem esconder no scroll)
       navbar.classList.remove('hidden');
       navbar.classList.add('visible');
     }
@@ -1773,7 +1769,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 /* =========================================================
-   TEMPLATES EDITÃVEIS (cartÃ£o, post, cupom) â€” baixar PNG
+   TEMPLATES EDITÁVEIS (cartão, post, cupom) — baixar PNG
    ========================================================= */
 (function initTemplates(){
   const imgs={cartao:null, post:null, cupom:null};
@@ -1852,15 +1848,16 @@ document.addEventListener('DOMContentLoaded', function() {
 })();
 
 /* =========================================================
-   PWA â€” registro do Service Worker (offline)
+   PWA — registro do Service Worker (offline)
    ========================================================= */
 if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
   window.addEventListener('load', function(){
     navigator.serviceWorker.register('sw.js').catch(function(){});
   });
 }
-/* KODAROS â€” Funil de diagnÃ³stico
-   Fluxo: abertura â†’ perfil â†’ 4 perguntas adaptadas ao perfil â†’ diagnÃ³stico + brinde + vitrine 1+2 â†’ site principal */
+
+/* KODAROS — Funil de diagnóstico
+   Fluxo: abertura → perfil → 4 perguntas adaptadas ao perfil → diagnóstico + brinde + vitrine 1+2 → site principal */
 
 (function () {
     "use strict";
@@ -1871,68 +1868,68 @@ if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
     var SITE_BASE = "";
     var COVER_BASE = "./";
 
-    /* ---------- CATÃLOGO ESPELHADO DO SITE PRINCIPAL ---------- */
+    /* ---------- CATÁLOGO ESPELHADO DO SITE PRINCIPAL ---------- */
     var PRODUCTS = {
         lancamento: {
-            id: "lancamento", badge: "ClÃ¡ssico",
-            title: "LanÃ§amento MilionÃ¡rio",
-            desc: "O mÃ©todo para vender cursos e produtos digitais: do planejamento Ã  execuÃ§Ã£o de lanÃ§amentos que convertem.",
+            id: "lancamento", badge: "Clássico",
+            title: "Lançamento Milionário",
+            desc: "O método para vender cursos e produtos digitais: do planejamento à execução de lançamentos que convertem.",
             old: "R$ 47,00", now: "R$ 12,99",
             cover: COVER_BASE + "livro3.png",
             url: "https://pay.hotmart.com/R106895415M?utm_source=funil&utm_medium=quiz&utm_campaign=diagnostico"
         },
         trafego: {
-            id: "trafego", badge: "ClÃ¡ssico",
-            title: "TrÃ¡fego Que Vende",
-            desc: "Domine Facebook e Google Ads e crie campanhas pagas que geram retorno consistente e escalÃ¡vel.",
+            id: "trafego", badge: "Clássico",
+            title: "Tráfego Que Vende",
+            desc: "Domine Facebook e Google Ads e crie campanhas pagas que geram retorno consistente e escalável.",
             old: "R$ 47,00", now: "R$ 12,99",
             cover: COVER_BASE + "livro1.png",
             url: "https://pay.hotmart.com/D106894870O?utm_source=funil&utm_medium=quiz&utm_campaign=diagnostico"
         },
         venda: {
-            id: "venda", badge: "ClÃ¡ssico",
+            id: "venda", badge: "Clássico",
             title: "Venda Mais Hoje",
-            desc: "Marketing e vendas diretos, sem enrolaÃ§Ã£o: tÃ¡ticas prÃ¡ticas para aumentar suas vendas imediatamente.",
+            desc: "Marketing e vendas diretos, sem enrolação: táticas práticas para aumentar suas vendas imediatamente.",
             old: "R$ 47,00", now: "R$ 12,99",
             cover: COVER_BASE + "livro2.png",
             url: "https://pay.hotmart.com/R106895345D?utm_source=funil&utm_medium=quiz&utm_campaign=diagnostico"
         },
         gestao: {
-            id: "gestao", badge: "ClÃ¡ssico",
-            title: "Os 10 Pilares da GestÃ£o Empresarial",
-            desc: "10 pilares para organizar e crescer sua empresa com controle e decisÃµes baseadas em dados.",
+            id: "gestao", badge: "Clássico",
+            title: "Os 10 Pilares da Gestão Empresarial",
+            desc: "10 pilares para organizar e crescer sua empresa com controle e decisões baseadas em dados.",
             old: "R$ 67,00", now: "R$ 22,99",
-            cover: COVER_BASE + "livro-gestao.png",
+            cover: COVER_BASE + "livro%20os%2010%20pilares%20da%20gest%C3%A3o%20empresarial.png",
             url: "https://pay.hotmart.com/S107016677T?utm_source=funil&utm_medium=quiz&utm_campaign=diagnostico"
         },
         financeiro: {
-            id: "financeiro", badge: "ClÃ¡ssico",
+            id: "financeiro", badge: "Clássico",
             title: "Os 10 Pilares do Controle Financeiro",
-            desc: "Organize o fluxo de caixa, a formaÃ§Ã£o de preÃ§os e reduza custos para lucrar com previsibilidade.",
+            desc: "Organize o fluxo de caixa, a formação de preços e reduza custos para lucrar com previsibilidade.",
             old: "R$ 67,00", now: "R$ 22,99",
-            cover: COVER_BASE + "livro-financeiro.png",
+            cover: COVER_BASE + "livro%20os%2010%20pilares%20do%20controle%20financeiro.png",
             url: "https://pay.hotmart.com/E107016796K?utm_source=funil&utm_medium=quiz&utm_campaign=diagnostico"
         },
         site: {
-            id: "site", badge: "ClÃ¡ssico",
+            id: "site", badge: "Clássico",
             title: "Use Seu Site Para Escalar Sua Empresa",
-            desc: "Transforme seu site em mÃ¡quina de vendas com SEO, captura de leads e automaÃ§Ã£o.",
+            desc: "Transforme seu site em máquina de vendas com SEO, captura de leads e automação.",
             old: "R$ 67,00", now: "R$ 22,99",
-            cover: COVER_BASE + "livro-site.png",
+            cover: COVER_BASE + "livro%20use%20seu%20site%20para%20escalar%20sua%20empresa.png",
             url: "https://pay.hotmart.com/Y107016734X?utm_source=funil&utm_medium=quiz&utm_campaign=diagnostico"
         },
         reclamacoes: {
-            id: "reclamacoes", badge: "ClÃ¡ssico",
-            title: "Transforme ReclamaÃ§Ãµes em Vendas",
-            desc: "O mÃ©todo para virar reclamaÃ§Ãµes em fidelizaÃ§Ã£o e construir uma cultura centrada no cliente.",
+            id: "reclamacoes", badge: "Clássico",
+            title: "Transforme Reclamações em Vendas",
+            desc: "O método para virar reclamações em fidelização e construir uma cultura centrada no cliente.",
             old: "R$ 67,00", now: "R$ 22,99",
-            cover: COVER_BASE + "livro-reclamacoes.png",
+            cover: COVER_BASE + "livro%20transforme%20reclama%C3%A7%C3%B5es%20em%20vendas.png",
             url: "https://pay.hotmart.com/G107016779V?utm_source=funil&utm_medium=quiz&utm_campaign=diagnostico"
         },
         arquitetura: {
-            id: "arquitetura", badge: "AvanÃ§ado",
-            title: "Arquitetura de AquisiÃ§Ã£o",
-            desc: "O sistema operacional de trÃ¡fego pago e funis da KODAROS. Framework A.P.E.R.T.O., 3 calculadoras e checklists.",
+            id: "arquitetura", badge: "Avançado",
+            title: "Arquitetura de Aquisição",
+            desc: "O sistema operacional de tráfego pago e funis da KODAROS. Framework A.P.E.R.T.O., 3 calculadoras e checklists.",
             old: "R$ 247,00", now: "R$ 197,00",
             cover: COVER_BASE + "arquitetura-capa.png",
             url: "https://kelvinoliveiracode.github.io/site-Arquitetura-de-Aquisicao/?utm_source=funil&utm_medium=quiz&utm_campaign=diagnostico"
@@ -1944,98 +1941,98 @@ if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
         empresa: [
             {
                 q: "Quanto tempo do seu dia vai para tarefas repetitivas?",
-                sub: "Responder clientes, postar nas redes, mandar orÃ§amento, cobrar pagamentoâ€¦",
+                sub: "Responder clientes, postar nas redes, mandar orçamento, cobrar pagamento…",
                 options: [
-                    { v: "3h+", t: "Mais de 3 horas por dia", fb: "Mais de 3 horas por dia em tarefas repetitivas Ã© tempo que nÃ£o volta." },
-                    { v: "1-3h", t: "Entre 1 e 3 horas", fb: "Entre 1 e 3 horas diÃ¡rias somam semanas inteiras de trabalho manual por ano." },
-                    { v: "<1h", t: "Menos de 1 hora", fb: "Menos de 1 hora jÃ¡ Ã© bom sinal â€” mas cada minuto salvo vira margem." },
-                    { v: "auto", t: "Quase nada â€” aqui muita coisa jÃ¡ Ã© automÃ¡tica", fb: "VocÃª jÃ¡ entendeu o jogo: o que Ã© manual, escala mal." }
+                    { v: "3h+", t: "Mais de 3 horas por dia", fb: "Mais de 3 horas por dia em tarefas repetitivas é tempo que não volta." },
+                    { v: "1-3h", t: "Entre 1 e 3 horas", fb: "Entre 1 e 3 horas diárias somam semanas inteiras de trabalho manual por ano." },
+                    { v: "<1h", t: "Menos de 1 hora", fb: "Menos de 1 hora já é bom sinal — mas cada minuto salvo vira margem." },
+                    { v: "auto", t: "Quase nada — aqui muita coisa já é automática", fb: "Você já entendeu o jogo: o que é manual, escala mal." }
                 ]
             },
             {
                 q: "Hoje, o que mais trava o seu crescimento?",
-                sub: "Seja sincero â€” ninguÃ©m estÃ¡ olhando.",
+                sub: "Seja sincero — ninguém está olhando.",
                 options: [
-                    { v: "tempo", t: "Falta de tempo pra cuidar de tudo", fb: "Falta de tempo Ã© o sintoma mais comum de processos manuais." },
-                    { v: "clientes", t: "Falta de clientes entrando", fb: "Sem presenÃ§a e sem follow-up automÃ¡tico, a entrada de clientes vira montanha-russa." },
-                    { v: "organizacao", t: "DesorganizaÃ§Ã£o e processos na cabeÃ§a", fb: "Processo que vive na cabeÃ§a nÃ£o escala â€” e cobra caro pelo esquecimento." },
-                    { v: "autoridade", t: "Falta de presenÃ§a e autoridade digital", fb: "Sem autoridade digital, o cliente compara sÃ³ preÃ§o. Com autoridade, ele escolhe vocÃª." }
+                    { v: "tempo", t: "Falta de tempo pra cuidar de tudo", fb: "Falta de tempo é o sintoma mais comum de processos manuais." },
+                    { v: "clientes", t: "Falta de clientes entrando", fb: "Sem presença e sem follow-up automático, a entrada de clientes vira montanha-russa." },
+                    { v: "organizacao", t: "Desorganização e processos na cabeça", fb: "Processo que vive na cabeça não escala — e cobra caro pelo esquecimento." },
+                    { v: "autoridade", t: "Falta de presença e autoridade digital", fb: "Sem autoridade digital, o cliente compara só preço. Com autoridade, ele escolhe você." }
                 ]
             },
             {
-                q: "Se um sistema trabalhasse por vocÃª 24h por dia, por onde comeÃ§aria?",
+                q: "Se um sistema trabalhasse por você 24h por dia, por onde começaria?",
                 sub: "",
                 options: [
-                    { v: "whatsapp", t: "Atendimento e respostas no WhatsApp", fb: "O WhatsApp Ã© onde a venda nasce â€” e onde ela morre sem resposta rÃ¡pida." },
-                    { v: "redes", t: "Redes sociais e publicaÃ§Ã£o de conteÃºdo", fb: "ConstÃ¢ncia nas redes constrÃ³i autoridade. O problema nunca Ã© ideia, Ã© rotina." },
-                    { v: "followup", t: "Follow-up de clientes e orÃ§amentos", fb: "Grande parte das vendas acontece no follow-up â€” e Ã© exatamente ele que ninguÃ©m tem tempo de fazer." },
-                    { v: "tudo", t: "Por tudo â€” quero escalar de vez", fb: "Quem automatiza tudo nÃ£o contrai dÃ­vida de tempo com o prÃ³prio negÃ³cio." }
+                    { v: "whatsapp", t: "Atendimento e respostas no WhatsApp", fb: "O WhatsApp é onde a venda nasce — e onde ela morre sem resposta rápida." },
+                    { v: "redes", t: "Redes sociais e publicação de conteúdo", fb: "Constância nas redes constrói autoridade. O problema nunca é ideia, é rotina." },
+                    { v: "followup", t: "Follow-up de clientes e orçamentos", fb: "Grande parte das vendas acontece no follow-up — e é exatamente ele que ninguém tem tempo de fazer." },
+                    { v: "tudo", t: "Por tudo — quero escalar de vez", fb: "Quem automatiza tudo não contrai dívida de tempo com o próprio negócio." }
                 ]
             },
             microCommit()
         ],
         iniciante: [
             {
-                q: "Qual Ã© o seu maior desafio ao comeÃ§ar no digital?",
-                sub: "O primeiro passo Ã© saber onde dÃ³i.",
+                q: "Qual é o seu maior desafio ao começar no digital?",
+                sub: "O primeiro passo é saber onde dói.",
                 options: [
-                    { v: "poronde", t: "NÃ£o saber por onde comeÃ§ar", fb: "ComeÃ§ar sem mapa Ã© o erro nÂº 1 â€” e o mais fÃ¡cil de corrigir." },
-                    { v: "tempo", t: "Ter pouco tempo por dia", fb: "VocÃª nÃ£o precisa de 8 horas: precisa de um mÃ©todo que caiba na sua rotina." },
-                    { v: "medo", t: "Medo de errar na frente dos outros", fb: "Todo mundo que hoje fatura comeÃ§ou errando em pÃºblico â€” Ã© parte do caminho." },
-                    { v: "tech", t: "Achar que precisa entender de tecnologia", fb: "As ferramentas de hoje fazem o pesado. O que falta Ã© processo, nÃ£o cÃ³digo." }
+                    { v: "poronde", t: "Não saber por onde começar", fb: "Começar sem mapa é o erro nº 1 — e o mais fácil de corrigir." },
+                    { v: "tempo", t: "Ter pouco tempo por dia", fb: "Você não precisa de 8 horas: precisa de um método que caiba na sua rotina." },
+                    { v: "medo", t: "Medo de errar na frente dos outros", fb: "Todo mundo que hoje fatura começou errando em público — é parte do caminho." },
+                    { v: "tech", t: "Achar que precisa entender de tecnologia", fb: "As ferramentas de hoje fazem o pesado. O que falta é processo, não código." }
                 ]
             },
             {
-                q: "Em que ponto vocÃª estÃ¡ hoje?",
-                sub: "Sem julgamento â€” sÃ³ clareza.",
+                q: "Em que ponto você está hoje?",
+                sub: "Sem julgamento — só clareza.",
                 options: [
-                    { v: "parado", t: "Ainda nÃ£o comecei", fb: "Perfeito: comeÃ§ar do zero, comeÃ§ando certo, Ã© vantagem." },
-                    { v: "posts", t: "JÃ¡ posto nas redes, mas sem estratÃ©gia", fb: "Postar sem estratÃ©gia Ã© correr na esteira: cansa e nÃ£o sai do lugar." },
-                    { v: "vendo", t: "JÃ¡ vendo algo, mas tudo no manual", fb: "Vender manualmente prova que existe demanda â€” agora Ã© estrutura para escalar." },
-                    { v: "estudo", t: "Estudo muito e pratico pouco", fb: "Conhecimento sem execuÃ§Ã£o vira ansiedade. O segredo Ã© prÃ¡tica guiada." }
+                    { v: "parado", t: "Ainda não comecei", fb: "Perfeito: começar do zero, começando certo, é vantagem." },
+                    { v: "posts", t: "Já posto nas redes, mas sem estratégia", fb: "Postar sem estratégia é correr na esteira: cansa e não sai do lugar." },
+                    { v: "vendo", t: "Já vendo algo, mas tudo no manual", fb: "Vender manualmente prova que existe demanda — agora é estrutura para escalar." },
+                    { v: "estudo", t: "Estudo muito e pratico pouco", fb: "Conhecimento sem execução vira ansiedade. O segredo é prática guiada." }
                 ]
             },
             {
-                q: "Se alguÃ©m te mostrasse o caminho, o que resolveria primeiro?",
+                q: "Se alguém te mostrasse o caminho, o que resolveria primeiro?",
                 sub: "",
                 options: [
-                    { v: "base", t: "Entender o bÃ¡sico do jogo digital", fb: "Base sÃ³lida evita meses de tentativa e erro." },
-                    { v: "primeiravenda", t: "Fazer a primeira venda", fb: "A primeira venda muda a mentalidade â€” depois dela, o jogo fica real." },
-                    { v: "constancia", t: "Criar constÃ¢ncia nas redes", fb: "ConstÃ¢ncia Ã© o que separa quem aparece de quem desiste na semana 3." },
-                    { v: "plano", t: "Ter um plano claro passo a passo", fb: "Com plano, cada dia tem um prÃ³ximo passo. Sem plano, cada dia Ã© dÃºvida." }
+                    { v: "base", t: "Entender o básico do jogo digital", fb: "Base sólida evita meses de tentativa e erro." },
+                    { v: "primeiravenda", t: "Fazer a primeira venda", fb: "A primeira venda muda a mentalidade — depois dela, o jogo fica real." },
+                    { v: "constancia", t: "Criar constância nas redes", fb: "Constância é o que separa quem aparece de quem desiste na semana 3." },
+                    { v: "plano", t: "Ter um plano claro passo a passo", fb: "Com plano, cada dia tem um próximo passo. Sem plano, cada dia é dúvida." }
                 ]
             },
             microCommit()
         ],
         outros: [
             {
-                q: "O que te trouxe atÃ© aqui hoje?",
-                sub: "Me conta â€” o diagnÃ³stico se adapta a vocÃª.",
+                q: "O que te trouxe até aqui hoje?",
+                sub: "Me conta — o diagnóstico se adapta a você.",
                 options: [
-                    { v: "renda", t: "Quero uma renda extra", fb: "Renda extra bem construÃ­da vira renda principal â€” com mÃ©todo." },
-                    { v: "transicao", t: "Quero mudar de Ã¡rea / carreira", fb: "TransiÃ§Ã£o de carreira pro digital Ã© a mais rÃ¡pida do mercado quando hÃ¡ direÃ§Ã£o." },
-                    { v: "escalar", t: "JÃ¡ atendo clientes e quero escalar", fb: "Escalar sem estrutura quebra a operaÃ§Ã£o â€” por isso automaÃ§Ã£o vem primeiro." },
-                    { v: "curiosidade", t: "Curiosidade â€” quero entender o jogo", fb: "Entender o jogo antes de apostar Ã© a decisÃ£o mais inteligente." }
+                    { v: "renda", t: "Quero uma renda extra", fb: "Renda extra bem construída vira renda principal — com método." },
+                    { v: "transicao", t: "Quero mudar de área / carreira", fb: "Transição de carreira pro digital é a mais rápida do mercado quando há direção." },
+                    { v: "escalar", t: "Já atendo clientes e quero escalar", fb: "Escalar sem estrutura quebra a operação — por isso automação vem primeiro." },
+                    { v: "curiosidade", t: "Curiosidade — quero entender o jogo", fb: "Entender o jogo antes de apostar é a decisão mais inteligente." }
                 ]
             },
             {
                 q: "Qual frase te define melhor neste momento?",
                 sub: "",
                 options: [
-                    { v: "tempopouco", t: "Tenho pouco tempo disponÃ­vel", fb: "Pouco tempo nÃ£o Ã© obstÃ¡culo: Ã© filtro. O que importa Ã© direÃ§Ã£o." },
-                    { v: "direcao", t: "Tenho tempo, mas falta direÃ§Ã£o", fb: "DireÃ§Ã£o transforma horas soltas em progresso composto." },
-                    { v: "oquevender", t: "NÃ£o sei o que vender", fb: "VocÃª nÃ£o precisa inventar: precisa mapear o que jÃ¡ resolve bem." },
-                    { v: "execucao", t: "Sei o que quero, falta execuÃ§Ã£o", fb: "ExecuÃ§Ã£o Ã© mÃºsculo â€” e sistemas sÃ£o a academia." }
+                    { v: "tempopouco", t: "Tenho pouco tempo disponível", fb: "Pouco tempo não é obstáculo: é filtro. O que importa é direção." },
+                    { v: "direcao", t: "Tenho tempo, mas falta direção", fb: "Direção transforma horas soltas em progresso composto." },
+                    { v: "oquevender", t: "Não sei o que vender", fb: "Você não precisa inventar: precisa mapear o que já resolve bem." },
+                    { v: "execucao", t: "Sei o que quero, falta execução", fb: "Execução é músculo — e sistemas são a academia." }
                 ]
             },
             {
-                q: "Se pudesse resolver uma coisa sÃ³ este mÃªs, qual seria?",
+                q: "Se pudesse resolver uma coisa só este mês, qual seria?",
                 sub: "",
                 options: [
-                    { v: "clareza", t: "Ter clareza do prÃ³ximo passo", fb: "Clareza Ã© o ativo mais barato e mais negligenciado." },
-                    { v: "presenca", t: "Criar presenÃ§a digital de verdade", fb: "PresenÃ§a Ã© ativo composto: cada publicaÃ§Ã£o trabalha para sempre." },
-                    { v: "vendas", t: "Aumentar minhas vendas", fb: "Venda consistente nasce de processo, nÃ£o de sorte." },
-                    { v: "automatizar", t: "Automatizar o que jÃ¡ faÃ§o manualmente", fb: "Automatizar o que existe libera o tempo para o que vem." }
+                    { v: "clareza", t: "Ter clareza do próximo passo", fb: "Clareza é o ativo mais barato e mais negligenciado." },
+                    { v: "presenca", t: "Criar presença digital de verdade", fb: "Presença é ativo composto: cada publicação trabalha para sempre." },
+                    { v: "vendas", t: "Aumentar minhas vendas", fb: "Venda consistente nasce de processo, não de sorte." },
+                    { v: "automatizar", t: "Automatizar o que já faço manualmente", fb: "Automatizar o que existe libera o tempo para o que vem." }
                 ]
             },
             microCommit()
@@ -2044,44 +2041,44 @@ if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
 
     function microCommit() {
         return {
-            q: "Quer receber seu diagnÃ³stico + o e-book gratuito agora?",
+            q: "Quer receber seu diagnóstico + o e-book gratuito agora?",
             sub: "",
             options: [
                 { v: "sim", t: "SIM, QUERO RECEBER", fb: "", highlight: true },
-                { v: "pensar", t: "Quero, mas vou pensar mais um poucoâ€¦", fb: "" }
+                { v: "pensar", t: "Quero, mas vou pensar mais um pouco…", fb: "" }
             ]
         };
     }
 
-    /* ---------- DIAGNÃ“STICO POR PERFIL ---------- */
+    /* ---------- DIAGNÓSTICO POR PERFIL ---------- */
     var DIAG = {
         empresa: {
             intro: function (a) {
                 var q1 = {
-                    "3h+": "vocÃª estÃ¡ gastando <strong>mais de 3 horas por dia</strong> em tarefas que uma mÃ¡quina faria por vocÃª",
-                    "1-3h": "vocÃª perde <strong>entre 1 e 3 horas por dia</strong> com o que poderia rodar sozinho",
-                    "<1h": "vocÃª jÃ¡ controla o tempo manual â€” mas o processo ainda depende de vocÃª",
-                    "auto": "sua operaÃ§Ã£o jÃ¡ tem automaÃ§Ã£o â€” o prÃ³ximo nÃ­vel Ã© virar estratÃ©gia"
+                    "3h+": "você está gastando <strong>mais de 3 horas por dia</strong> em tarefas que uma máquina faria por você",
+                    "1-3h": "você perde <strong>entre 1 e 3 horas por dia</strong> com o que poderia rodar sozinho",
+                    "<1h": "você já controla o tempo manual — mas o processo ainda depende de você",
+                    "auto": "sua operação já tem automação — o próximo nível é virar estratégia"
                 };
                 var q2 = {
-                    "tempo": "seu gargalo Ã© <strong>tempo</strong>",
-                    "clientes": "seu gargalo Ã© <strong>entrada de clientes</strong>",
-                    "organizacao": "seu gargalo Ã© <strong>organizaÃ§Ã£o</strong>",
-                    "autoridade": "seu gargalo Ã© <strong>autoridade digital</strong>"
+                    "tempo": "seu gargalo é <strong>tempo</strong>",
+                    "clientes": "seu gargalo é <strong>entrada de clientes</strong>",
+                    "organizacao": "seu gargalo é <strong>organização</strong>",
+                    "autoridade": "seu gargalo é <strong>autoridade digital</strong>"
                 };
                 var q3 = {
-                    "whatsapp": "atendimento automÃ¡tico no WhatsApp, respondendo na hora â€” inclusive de madrugada",
-                    "redes": "publicaÃ§Ã£o de conteÃºdo agendada e constante, sem depender de memÃ³ria ou motivaÃ§Ã£o",
-                    "followup": "follow-up automÃ¡tico de orÃ§amentos e clientes, para nenhuma venda morrer no esquecimento",
-                    "tudo": "atendimento, conteÃºdo e follow-up rodando juntos, como um time invisÃ­vel 24h"
+                    "whatsapp": "atendimento automático no WhatsApp, respondendo na hora — inclusive de madrugada",
+                    "redes": "publicação de conteúdo agendada e constante, sem depender de memória ou motivação",
+                    "followup": "follow-up automático de orçamentos e clientes, para nenhuma venda morrer no esquecimento",
+                    "tudo": "atendimento, conteúdo e follow-up rodando juntos, como um time invisível 24h"
                 };
                 return {
                     text: "Pelas suas respostas, " + (q1[a[0]] || q1["1-3h"]) + ", e " + (q2[a[1]] || q2.tempo) +
-                        ". A boa notÃ­cia: isso tem soluÃ§Ã£o â€” e ela comeÃ§a com o que estÃ¡ no seu e-book.",
+                        ". A boa notícia: isso tem solução — e ela começa com o que está no seu e-book.",
                     bullets: [
-                        "Prioridade nÂº 1: " + (q3[a[2]] || q3.tudo) + ".",
-                        "AutomaÃ§Ã£o nÃ£o substitui vocÃª â€” ela devolve seu tempo para vender e crescer.",
-                        "Quanto antes o sistema assume o repetitivo, mais cedo o negÃ³cio trabalha por vocÃª."
+                        "Prioridade nº 1: " + (q3[a[2]] || q3.tudo) + ".",
+                        "Automação não substitui você — ela devolve seu tempo para vender e crescer.",
+                        "Quanto antes o sistema assume o repetitivo, mais cedo o negócio trabalha por você."
                     ]
                 };
             }
@@ -2089,30 +2086,30 @@ if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
         iniciante: {
             intro: function (a) {
                 var q1 = {
-                    "poronde": "o seu desafio Ã© <strong>saber por onde comeÃ§ar</strong>",
-                    "tempo": "o seu desafio Ã© <strong>falta de tempo</strong>",
-                    "medo": "o seu desafio Ã© <strong>medo de errar em pÃºblico</strong>",
-                    "tech": "o seu desafio Ã© <strong>achar que precisa ser tÃ©cnico</strong>"
+                    "poronde": "o seu desafio é <strong>saber por onde começar</strong>",
+                    "tempo": "o seu desafio é <strong>falta de tempo</strong>",
+                    "medo": "o seu desafio é <strong>medo de errar em público</strong>",
+                    "tech": "o seu desafio é <strong>achar que precisa ser técnico</strong>"
                 };
                 var q2 = {
-                    "parado": "vocÃª ainda estÃ¡ no marco zero â€” e isso Ã© vantagem: dÃ¡ pra comeÃ§ar certo",
-                    "posts": "vocÃª jÃ¡ produz conteÃºdo, mas ainda sem estratÃ©gia por trÃ¡s",
-                    "vendo": "vocÃª jÃ¡ vende â€” agora falta estrutura para escalar",
-                    "estudo": "vocÃª acumula teoria e ainda pratica pouco"
+                    "parado": "você ainda está no marco zero — e isso é vantagem: dá pra começar certo",
+                    "posts": "você já produz conteúdo, mas ainda sem estratégia por trás",
+                    "vendo": "você já vende — agora falta estrutura para escalar",
+                    "estudo": "você acumula teoria e ainda pratica pouco"
                 };
                 var q3 = {
-                    "base": "montar a base: presenÃ§a, oferta e uma rotina mÃ­nima viÃ¡vel",
-                    "primeiravenda": "estruturar o caminho direto atÃ© a primeira venda",
-                    "constancia": "criar um ciclo de constÃ¢ncia que caiba na sua semana",
+                    "base": "montar a base: presença, oferta e uma rotina mínima viável",
+                    "primeiravenda": "estruturar o caminho direto até a primeira venda",
+                    "constancia": "criar um ciclo de constância que caiba na sua semana",
                     "plano": "seguir um plano claro, um passo por dia"
                 };
                 return {
                     text: "Pelas suas respostas, " + (q1[a[0]] || q1.poronde) + " e " + (q2[a[1]] || q2.parado) +
-                        ". NinguÃ©m nasce pronto â€” o que muda o jogo Ã© comeÃ§ar com mÃ©todo.",
+                        ". Ninguém nasce pronto — o que muda o jogo é começar com método.",
                     bullets: [
                         "Primeiro passo: " + (q3[a[2]] || q3.base) + ".",
-                        "ConstÃ¢ncia vence talento: passos diÃ¡rios pequenos constroem autoridade.",
-                        "O e-book abaixo organiza exatamente essa base â€” do zero ao patrimÃ´nio."
+                        "Constância vence talento: passos diários pequenos constroem autoridade.",
+                        "O e-book abaixo organiza exatamente essa base — do zero ao patrimônio."
                     ]
                 };
             }
@@ -2120,37 +2117,37 @@ if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
         outros: {
             intro: function (a) {
                 var q1 = {
-                    "renda": "vocÃª quer <strong>uma renda extra</strong>",
-                    "transicao": "vocÃª quer <strong>transiÃ§Ã£o de carreira</strong>",
-                    "escalar": "vocÃª quer <strong>escalar o que jÃ¡ atende</strong>",
-                    "curiosidade": "vocÃª quer <strong>entender o jogo antes de apostar</strong>"
+                    "renda": "você quer <strong>uma renda extra</strong>",
+                    "transicao": "você quer <strong>transição de carreira</strong>",
+                    "escalar": "você quer <strong>escalar o que já atende</strong>",
+                    "curiosidade": "você quer <strong>entender o jogo antes de apostar</strong>"
                 };
                 var q2 = {
-                    "tempopouco": "o seu tempo Ã© curto",
-                    "direcao": "o seu tempo existe, mas falta direÃ§Ã£o",
-                    "oquevender": "a sua dÃºvida Ã© o que vender",
-                    "execucao": "a sua lacuna Ã© execuÃ§Ã£o"
+                    "tempopouco": "o seu tempo é curto",
+                    "direcao": "o seu tempo existe, mas falta direção",
+                    "oquevender": "a sua dúvida é o que vender",
+                    "execucao": "a sua lacuna é execução"
                 };
                 var q3 = {
-                    "clareza": "ter clareza do prÃ³ximo passo",
-                    "presenca": "construir presenÃ§a digital de verdade",
+                    "clareza": "ter clareza do próximo passo",
+                    "presenca": "construir presença digital de verdade",
                     "vendas": "aumentar suas vendas",
-                    "automatizar": "automatizar o que jÃ¡ faz manualmente"
+                    "automatizar": "automatizar o que já faz manualmente"
                 };
                 return {
                     text: "Pelas suas respostas, " + (q1[a[0]] || q1.curiosidade) + " e " + (q2[a[1]] || q2.direcao) +
-                        ". O digital premia quem tem mÃ©todo â€” nÃ£o quem tem sorte.",
+                        ". O digital premia quem tem método — não quem tem sorte.",
                     bullets: [
-                        "Foco do mÃªs: " + (q3[a[2]] || q3.clareza) + ".",
-                        "Autoridade digital Ã© ativo composto: comeÃ§a pequeno e cresce sozinho.",
-                        "O e-book abaixo mostra a base completa â€” do zero ao patrimÃ´nio."
+                        "Foco do mês: " + (q3[a[2]] || q3.clareza) + ".",
+                        "Autoridade digital é ativo composto: começa pequeno e cresce sozinho.",
+                        "O e-book abaixo mostra a base completa — do zero ao patrimônio."
                     ]
                 };
             }
         }
     };
 
-    /* ---------- LÃ“GICA DE RECOMENDAÃ‡ÃƒO 1+2 ---------- */
+    /* ---------- LÓGICA DE RECOMENDAÇÃO 1+2 ---------- */
     function getRecommendation(profile, a) {
         var p = profile || "outros";
         var q2 = a[1], q3 = a[2];
@@ -2205,7 +2202,7 @@ if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
         if (!p) return "";
         var isPrimary = variant === "primary";
         var cls = isPrimary ? "rec-card rec-card-primary" : "rec-card";
-        var whyTag = isPrimary ? '<span class="rec-why">RECOMENDAÃ‡ÃƒO #1 â€” COMECE POR AQUI</span>' : "";
+        var whyTag = isPrimary ? '<span class="rec-why">RECOMENDAÇÃO #1 — COMECE POR AQUI</span>' : "";
         return '' +
             '<article class="' + cls + '">' +
             whyTag +
@@ -2216,14 +2213,14 @@ if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
             '<p class="rec-desc">' + p.desc + '</p>' +
             '<div class="rec-price"><span class="old">' + p.old + '</span><span class="now">' + p.now + '</span></div>' +
             '<a href="' + p.url + '&utm_content=' + id + '" target="_blank" rel="noopener" class="btn ' + (isPrimary ? 'btn-primary' : 'btn-secondary') + ' rec-cta">' +
-            (isPrimary ? 'COMPRAR AGORA â€” ' + p.now : 'Ver no site oficial') +
+            (isPrimary ? 'COMPRAR AGORA — ' + p.now : 'Ver no site oficial') +
             '<svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>' +
             '</a>' +
-            '<a href="' + SITE_BASE + '/#ebooks" target="_blank" rel="noopener" class="rec-link">ver detalhes no site oficial â†’</a>' +
+            '<a href="' + SITE_BASE + '/#ebooks" target="_blank" rel="noopener" class="rec-link">ver detalhes no site oficial →</a>' +
             '</div></article>';
     }
 
-    /* ---------- NAVEGAÃ‡ÃƒO ---------- */
+    /* ---------- NAVEGAÇÃO ---------- */
     function goTo(id) {
         steps.forEach(function (s) { s.classList.remove("is-active"); });
         var target = document.getElementById(id);
@@ -2238,14 +2235,14 @@ if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
         }
     }
 
-    /* ---------- QUIZ DINÃ‚MICO ---------- */
+    /* ---------- QUIZ DINÂMICO ---------- */
     function renderQuestion() {
         var list = QUESTIONS[state.profile];
         var item = list[state.qIndex];
 
         document.getElementById("quiz-progress").style.width = ((state.qIndex + 1) / list.length * 100) + "%";
         document.getElementById("quiz-label").textContent = state.qIndex === list.length - 1
-            ? "ÃšLTIMA PERGUNTA"
+            ? "ÚLTIMA PERGUNTA"
             : "PERGUNTA " + (state.qIndex + 1) + " DE " + list.length;
         document.getElementById("quiz-title").textContent = item.q;
         document.getElementById("quiz-sub").textContent = item.sub || "";
@@ -2294,7 +2291,7 @@ if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
         }, ADVANCE_MS);
     }
 
-    /* ---------- DIAGNÃ“STICO + VITRINE ---------- */
+    /* ---------- DIAGNÓSTICO + VITRINE ---------- */
     function buildDiagnosis() {
         var box = document.getElementById("diagnosis");
         if (!box) return;
@@ -2302,7 +2299,7 @@ if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
         var d = (DIAG[state.profile] || DIAG.outros).intro(state.answers);
 
         var html = "";
-        html += '<p class="diagnosis-head">RESUMO DO SEU DIAGNÃ“STICO</p>';
+        html += '<p class="diagnosis-head">RESUMO DO SEU DIAGNÓSTICO</p>';
         html += '<p class="diagnosis-text">' + d.text + "</p>";
         html += '<ul class="diagnosis-list">' + d.bullets.map(function (b) {
             return '<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg>' + b + "</li>";
@@ -2310,8 +2307,8 @@ if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
 
         if (state.answers[state.answers.length - 1] === "pensar") {
             html += '<p class="diagnosis-text" style="margin-top:14px"><strong>P.S.:</strong> ' +
-                "enquanto isso, cada cliente sem resposta e cada post que nÃ£o sai Ã© espaÃ§o que o concorrente ocupa. " +
-                "Quando quiser, o WhatsApp da Kodaros estÃ¡ a um clique.</p>";
+                "enquanto isso, cada cliente sem resposta e cada post que não sai é espaço que o concorrente ocupa. " +
+                "Quando quiser, o WhatsApp da Kodaros está a um clique.</p>";
         }
         box.innerHTML = html;
 
@@ -2325,7 +2322,7 @@ if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
             recHtml += productCardHTML(rec.secondary[0], "secondary");
             recHtml += productCardHTML(rec.secondary[1], "secondary");
             recHtml += '</div>';
-            recHtml += '<p class="rec-footnote">Todos os e-books sÃ£o entregues pela Hotmart com acesso imediato. Pagamento 100% seguro. <a href="' + SITE_BASE + '/#ebooks" target="_blank" rel="noopener">Ver catÃ¡logo completo com 8 tÃ­tulos â†’</a></p>';
+            recHtml += '<p class="rec-footnote">Todos os e-books são entregues pela Hotmart com acesso imediato. Pagamento 100% seguro. <a href="' + SITE_BASE + '/#ebooks" target="_blank" rel="noopener">Ver catálogo completo com 8 títulos →</a></p>';
             recHtml += '</div>';
             recBlock.innerHTML = recHtml;
         }
@@ -2350,7 +2347,7 @@ if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
         });
     });
 
-    /* ---------- PARTÃCULAS DE FUNDO ---------- */
+    /* ---------- PARTÍCULAS DE FUNDO ---------- */
     (function particles() {
         var canvas = document.getElementById("particles");
         if (!canvas) return;

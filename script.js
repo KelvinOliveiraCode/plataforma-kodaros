@@ -2216,7 +2216,6 @@ if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
             (isPrimary ? 'COMPRAR AGORA — ' + p.now : 'Ver no site oficial') +
             '<svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>' +
             '</a>' +
-            '<a href="' + SITE_BASE + '/#ebooks" target="_blank" rel="noopener" class="rec-link">ver detalhes no site oficial →</a>' +
             '</div></article>';
     }
 

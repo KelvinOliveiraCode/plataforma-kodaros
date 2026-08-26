@@ -631,15 +631,15 @@ tr.total td{font-weight:700;color:var(--ink-primary);border-top:2px solid rgba(2
 .testimonial-card{padding:24px;background:var(--stone-temple)}
 .stars{font-size:.72rem;color:var(--aurea);letter-spacing:2px;margin-bottom:8px}
 .testimonial-text{font-size:.92rem;color:var(--ink-muted);line-height:1.6;margin-bottom:10px;font-style:italic}
-.testimonial-author strong{font-family:'Cormorant Garamond',serif;font-size:.92rem;font-weight:600;color:var(--ink-primary)}
-.testimonial-author span{font-size:.78rem;color:var(--ink-muted)}
+.testimonial-author strong{font-family:'Cormorant Garamond',serif;font-size:.95rem;font-weight:600;color:var(--ink-primary);letter-spacing:0.04em;line-height:1.3;display:block;margin-bottom:6px}
+.testimonial-author span{font-size:.78rem;color:var(--ink-muted);letter-spacing:0.06em;text-transform:uppercase;font-weight:500;line-height:1.2;display:block}
 .contact-channels{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;border:1px solid var(--hairline);background:var(--hairline);border-radius:2px;overflow:hidden;max-width:900px;margin:0 auto}
 @media(max-width:760px){.contact-channels{grid-template-columns:1fr}}
-.contact-channel{display:flex;flex-direction:column;gap:14px;padding:26px 22px;background:var(--stone-temple);transition:background .18s ease;cursor:pointer}
+.contact-channel{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:32px 22px;background:var(--stone-temple);transition:background .18s ease;cursor:pointer;text-align:center}
 .contact-channel:hover{background:var(--stone-coluna)}
 .channel-icon{width:42px;height:42px;display:flex;align-items:center;justify-content:center;border-radius:2px;background:rgba(237,233,225,0.03);border:1px solid var(--hairline);color:var(--ink-dim)}
 .contact-channel:hover .channel-icon{color:var(--aurea);border-color:var(--aurea-hair)}
-.channel-label{font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-muted)}
+.channel-label{font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-muted);text-align:center}
 .channel-value{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:var(--ink-primary)}
 .contact-form{max-width:680px;margin:40px auto 0;padding:28px;border-radius:2px;border:1px solid var(--hairline);background:var(--stone-temple)}
 .contact-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}

@@ -695,6 +695,25 @@ tr.total td{font-weight:700;color:var(--ink-primary);border-top:2px solid rgba(2
 @keyframes scrollPulse{0%{top:-100%}100%{top:100%}}
 @keyframes stepIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
 
+/* ---------- PLATFORM TABS (Biblioteca / Ferramentas / Diagnóstico) ---------- */
+.platform-tabs{
+  display:flex;gap:8px;justify-content:center;flex-wrap:wrap;
+  padding:14px;background:var(--stone-temple);border:1px solid var(--hairline);border-radius:2px;
+  max-width:640px;margin:0 auto;
+}
+.platform-tab{
+  flex:1;min-width:140px;
+  font-family:'Cinzel',serif;font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  padding:12px 18px;border-radius:2px;border:1px solid var(--hairline);background:transparent;color:var(--ink-muted);
+  cursor:pointer;transition:all .2s ease;
+}
+.platform-tab:hover{border-color:var(--hairline-strong);color:var(--ink-primary);background:rgba(237,233,225,0.04)}
+.platform-tab.active{background:var(--ink-primary);color:var(--stone-obsidian);border-color:var(--ink-primary);box-shadow:0 4px 12px rgba(0,0,0,0.12)}
+.platform-panel{animation:fadeIn .35s ease}
+.platform-panel[hidden]{display:none !important}
+.tool-category[hidden]{display:none !important}
+.tool-category.hidden-by-cat{display:none !important}
+
 /* Micro: notify msg */
 .notify-msg{font-size:.78rem;color:var(--aurea-lux);margin-top:6px;min-height:1.2em}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}

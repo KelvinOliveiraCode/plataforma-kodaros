@@ -165,24 +165,72 @@ function handleContact(e){
   form.reset(); return false;
 }
 
-// ÁGORA — categoria filter
+// ÁGORA — categoria filter (tabs com wrapper)
 (function(){
   const cats=document.querySelectorAll('.agora-cat');
-  const tools=document.querySelectorAll('#ferramentas .tool');
+  const categories=document.querySelectorAll('.tool-category');
+  const tools=document.querySelectorAll('#panel-ferramentas .tool');
   if(!cats.length) return;
   cats.forEach(btn=>{
     btn.addEventListener('click', ()=>{
       cats.forEach(b=>b.classList.remove('active'));
       btn.classList.add('active');
       const cat=btn.dataset.cat;
-      tools.forEach(t=>{
-        const c=t.dataset.cat;
-        const show=(cat==='all'||c===cat);
-        t.classList.toggle('hidden-by-cat', !show);
-      });
-      // scroll to tools if filtered
-      if(cat!=='all') document.getElementById('ferramentas').scrollIntoView({behavior:'smooth', block:'start'});
+      if(cat==='all'){
+        categories.forEach(c=>{ c.hidden=false; c.classList.remove('hidden-by-cat'); });
+        tools.forEach(t=>t.classList.remove('hidden-by-cat'));
+      } else {
+        categories.forEach(c=>{
+          const show=c.dataset.cat===cat;
+          c.hidden=!show;
+          c.classList.toggle('hidden-by-cat', !show);
+        });
+      }
     });
+  });
+})();
+
+// PLATFORM TABS — Biblioteca / Ferramentas / Diagnóstico
+(function(){
+  const tabs=document.querySelectorAll('.platform-tab');
+  const panels=document.querySelectorAll('.platform-panel');
+  if(!tabs.length) return;
+  function activate(target){
+    tabs.forEach(b=>{
+      const on=b.dataset.target===target;
+      b.classList.toggle('active', on);
+      b.setAttribute('aria-selected', on?'true':'false');
+    });
+    panels.forEach(p=>{
+      const on=p.id==='panel-'+target;
+      if(on){ p.hidden=false; p.classList.add('active'); }
+      else { p.hidden=true; p.classList.remove('active'); }
+    });
+    // update hash without scrolling
+    if(location.hash!=='#'+target) history.replaceState(null,'','#'+target);
+    // scroll to tabs
+    const explorar=document.getElementById('explorar');
+    if(explorar) explorar.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+  tabs.forEach(btn=>{
+    btn.addEventListener('click', ()=>activate(btn.dataset.target));
+  });
+  // open from hash
+  const hash=location.hash.replace('#','');
+  if(['biblioteca','ferramentas','diagnostico'].includes(hash)) activate(hash);
+  // nav links trigger tabs
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{
+    const href=a.getAttribute('href').replace('#','');
+    if(['biblioteca','ferramentas','diagnostico'].includes(href)){
+      a.addEventListener('click', (e)=>{
+        e.preventDefault();
+        activate(href);
+      });
+    }
+  });
+  window.addEventListener('hashchange', ()=>{
+    const h=location.hash.replace('#','');
+    if(['biblioteca','ferramentas','diagnostico'].includes(h)) activate(h);
   });
 })();
 

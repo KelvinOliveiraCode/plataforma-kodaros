@@ -210,7 +210,8 @@ function handleContact(e){
     if(location.hash!=='#'+target) history.replaceState(null,'','#'+target);
     // scroll to tabs
     const explorar=document.getElementById('explorar');
-    if(explorar) explorar.scrollIntoView({behavior:'smooth', block:'start'});
+    // scroll suave apenas no clique, não no hashchange
+    if(explorar && document.activeElement && document.activeElement.classList.contains('platform-tab')){ explorar.scrollIntoView({behavior:'smooth', block:'start'}); }
   }
   tabs.forEach(btn=>{
     btn.addEventListener('click', ()=>activate(btn.dataset.target));
@@ -2228,7 +2229,12 @@ if('serviceWorker' in navigator && /^https?:$/.test(location.protocol)){
         var target = document.getElementById(id);
         if (target) {
             target.classList.add("is-active");
-            window.scrollTo({ top: 0, behavior: "smooth" });
+            var funnel = document.getElementById('funnel');
+            var nav = document.getElementById('navbar');
+            if(funnel){
+                var top = funnel.getBoundingClientRect().top + window.pageYOffset - (nav ? nav.offsetHeight : 0) - 24;
+                window.scrollTo({ top: top, behavior: "smooth" });
+            }
         }
     }
 

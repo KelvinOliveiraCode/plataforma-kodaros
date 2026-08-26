@@ -701,6 +701,12 @@ tr.total td{font-weight:700;color:var(--ink-primary);border-top:2px solid rgba(2
   padding:14px;background:var(--stone-temple);border:1px solid var(--hairline);border-radius:2px;
   max-width:640px;margin:0 auto;
 }
+.platform-tabs{
+  display:flex;gap:8px;justify-content:center;flex-wrap:wrap;
+  padding:14px;background:var(--stone-temple);border:1px solid var(--hairline);border-radius:2px;
+  max-width:640px;margin:0 auto;
+  position:sticky;top:64px;z-index:20;backdrop-filter:blur(10px) saturate(1.05);-webkit-backdrop-filter:blur(10px) saturate(1.05)
+}
 .platform-tab{
   flex:1;min-width:140px;
   font-family:'Cinzel',serif;font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;

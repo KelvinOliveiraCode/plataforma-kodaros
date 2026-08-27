@@ -350,7 +350,7 @@ document.addEventListener('DOMContentLoaded', function() {
     /* ---------- CATÁLOGO ESPELHADO DO SITE PRINCIPAL ---------- */
     var PRODUCTS = {
         lancamento: {
-            id: "lancamento", badge: "Clássico",
+            id: "lancamento", badge: "Intermediário",
             title: "Lançamento Milionário",
             desc: "O método para vender cursos e produtos digitais: do planejamento à execução de lançamentos que convertem.",
             old: "R$ 47,00", now: "R$ 12,99",
@@ -358,7 +358,7 @@ document.addEventListener('DOMContentLoaded', function() {
             url: "https://pay.hotmart.com/R106895415M?utm_source=funil&utm_medium=quiz&utm_campaign=diagnostico"
         },
         trafego: {
-            id: "trafego", badge: "Clássico",
+            id: "trafego", badge: "Intermediário",
             title: "Tráfego Que Vende",
             desc: "Domine Facebook e Google Ads e crie campanhas pagas que geram retorno consistente e escalável.",
             old: "R$ 47,00", now: "R$ 12,99",
@@ -366,7 +366,7 @@ document.addEventListener('DOMContentLoaded', function() {
             url: "https://pay.hotmart.com/D106894870O?utm_source=funil&utm_medium=quiz&utm_campaign=diagnostico"
         },
         venda: {
-            id: "venda", badge: "Clássico",
+            id: "venda", badge: "Iniciante",
             title: "Venda Mais Hoje",
             desc: "Marketing e vendas diretos, sem enrolação: táticas práticas para aumentar suas vendas imediatamente.",
             old: "R$ 47,00", now: "R$ 12,99",
@@ -374,7 +374,7 @@ document.addEventListener('DOMContentLoaded', function() {
             url: "https://pay.hotmart.com/R106895345D?utm_source=funil&utm_medium=quiz&utm_campaign=diagnostico"
         },
         gestao: {
-            id: "gestao", badge: "Clássico",
+            id: "gestao", badge: "Iniciante",
             title: "Os 10 Pilares da Gestão Empresarial",
             desc: "10 pilares para organizar e crescer sua empresa com controle e decisões baseadas em dados.",
             old: "R$ 67,00", now: "R$ 22,99",
@@ -382,7 +382,7 @@ document.addEventListener('DOMContentLoaded', function() {
             url: "https://pay.hotmart.com/S107016677T?utm_source=funil&utm_medium=quiz&utm_campaign=diagnostico"
         },
         financeiro: {
-            id: "financeiro", badge: "Clássico",
+            id: "financeiro", badge: "Iniciante",
             title: "Os 10 Pilares do Controle Financeiro",
             desc: "Organize o fluxo de caixa, a formação de preços e reduza custos para lucrar com previsibilidade.",
             old: "R$ 67,00", now: "R$ 22,99",
@@ -390,7 +390,7 @@ document.addEventListener('DOMContentLoaded', function() {
             url: "https://pay.hotmart.com/E107016796K?utm_source=funil&utm_medium=quiz&utm_campaign=diagnostico"
         },
         site: {
-            id: "site", badge: "Clássico",
+            id: "site", badge: "Intermediário",
             title: "Use Seu Site Para Escalar Sua Empresa",
             desc: "Transforme seu site em máquina de vendas com SEO, captura de leads e automação.",
             old: "R$ 67,00", now: "R$ 22,99",
@@ -398,7 +398,7 @@ document.addEventListener('DOMContentLoaded', function() {
             url: "https://pay.hotmart.com/Y107016734X?utm_source=funil&utm_medium=quiz&utm_campaign=diagnostico"
         },
         reclamacoes: {
-            id: "reclamacoes", badge: "Clássico",
+            id: "reclamacoes", badge: "Iniciante",
             title: "Transforme Reclamações em Vendas",
             desc: "O método para virar reclamações em fidelização e construir uma cultura centrada no cliente.",
             old: "R$ 67,00", now: "R$ 22,99",

@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
   // SCROLL REVEAL
   (function(){
-    const els=document.querySelectorAll('.section-header, .stoa-card, .why-card, .testimonial-card, .contact-channel, .ebook-card, .tool');
+    const els=document.querySelectorAll('.section-header, .stoa-card, .why-card, .testimonial-card, .contact-channel, .ebook-card, .software-card, .tool');
     const obs=new IntersectionObserver(entries=>{
       entries.forEach(ent=>{
         if(ent.isIntersecting){
@@ -183,6 +183,12 @@ function handleContact(e){
       if(on){ p.hidden=false; p.classList.add('active'); }
       else { p.hidden=true; p.classList.remove('active'); }
     });
+    // Garante que o conteúdo do painel ativado fique visível
+    // (elementos .reveal dentro de painel hidden não disparam o IntersectionObserver)
+    const activePanel=document.getElementById('panel-'+target);
+    if(activePanel){
+      activePanel.querySelectorAll('.reveal:not(.active)').forEach(el=>el.classList.add('active'));
+    }
     if(location.hash!=='#'+target) history.replaceState(null,'','#'+target);
     const explorar=document.getElementById('explorar');
     // Sempre rola até as abas ao trocar de painel (footer ou tabs)

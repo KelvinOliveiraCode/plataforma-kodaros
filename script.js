@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function(){
       a.addEventListener('click', function(e){
         const href=this.getAttribute('href'); if(href==='#') return;
         const clean=href.replace('#','');
-        if(['biblioteca','diagnostico'].includes(clean)) return; // deixa o handler das abas cuidar
+        if(['biblioteca','diagnostico','softwares'].includes(clean)) return; // deixa o handler das abas cuidar
         const t=document.querySelector(href); if(t){ e.preventDefault(); const h=nav?nav.offsetHeight:0; const p=t.getBoundingClientRect().top+window.pageYOffset-h-18; window.scrollTo({top:p,behavior:'smooth'}); }
       });
     });
@@ -195,10 +195,10 @@ function handleContact(e){
     btn.addEventListener('click', ()=>activate(btn.dataset.target));
   });
   const hash=location.hash.replace('#','');
-  if(['biblioteca','diagnostico'].includes(hash)) activate(hash);
+  if(['biblioteca','diagnostico','softwares'].includes(hash)) activate(hash);
   document.querySelectorAll('a[href^="#"]').forEach(a=>{
     const href=a.getAttribute('href').replace('#','');
-    if(['biblioteca','diagnostico'].includes(href)){
+    if(['biblioteca','diagnostico','softwares'].includes(href)){
       a.addEventListener('click', (e)=>{
         e.preventDefault();
         activate(href);
@@ -207,7 +207,7 @@ function handleContact(e){
   });
   window.addEventListener('hashchange', ()=>{
     const h=location.hash.replace('#','');
-    if(['biblioteca','diagnostico'].includes(h)) activate(h);
+    if(['biblioteca','diagnostico','softwares'].includes(h)) activate(h);
   });
 })();
 

@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://kelvinoliveiracode.github.io/plataforma-kodaros/sitemap.xml

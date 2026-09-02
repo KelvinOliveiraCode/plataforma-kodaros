@@ -295,7 +295,7 @@ ul{list-style:none}
 
 /* ---------- STOA / ECOSSISTEMA ---------- */
 .stoa-grid{
-  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
   border:1px solid var(--hairline);background:var(--hairline);border-radius:2px;overflow:hidden;
   max-width:1180px;margin:0 auto;
 }
